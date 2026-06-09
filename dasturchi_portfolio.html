@@ -3,895 +3,758 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TermezShop — Online Do'kon</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>SuperBozor — O'zbekiston #1 Online Do'kon</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
-:root{--red:#e63946;--red2:#c1121f;--yellow:#ffd60a;--bg:#f2f3f7;--white:#fff;--dark:#1a1a2e;--muted:#8a8fa8;--border:#e2e5ef;--green:#2d9d78;--blue:#3a86ff;--orange:#fb5607;--shadow:0 2px 16px rgba(0,0,0,0.07)}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh}
-.hidden{display:none!important}
-button,input,select,textarea{font-family:inherit}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#F7F8FA;color:#111;min-height:100vh;overflow-x:hidden}
+:root{
+  --red:#E8192C;--red2:#C8102E;--dark:#0A0E1A;--navy:#1A2340;
+  --blue:#1A6DFF;--green:#00A651;--orange:#FF6B00;
+  --bg:#F7F8FA;--white:#fff;--border:#EAEDF2;
+  --text:#0A0E1A;--muted:#6B7280;--light:#F3F4F6;
+}
 
-/* SCROLLBAR */
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:#f0f0f0}
-::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
-.prod-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--card-shadow);transition:transform 0.2s,box-shadow 0.2s;cursor:pointer}
-.prod-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.12)}
-.prod-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative}
-.prod-badge-new{position:absolute;top:8px;left:8px;background:var(--primary);color:#fff;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:4px}
-.prod-badge-hot{position:absolute;top:8px;left:8px;background:#ff9f1c;color:#fff;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:4px}
-.prod-body{padding:0.9rem}
-.prod-name{font-weight:700;font-size:0.9rem;margin-bottom:0.3rem;line-height:1.3}
-.prod-desc{font-size:0.78rem;color:var(--muted);margin-bottom:0.6rem;line-height:1.5}
-.prod-rating{display:flex;align-items:center;gap:0.3rem;margin-bottom:0.6rem}
-.stars{color:#ffc300;font-size:0.8rem;letter-spacing:1px}
-.rating-num{font-size:0.75rem;color:var(--muted)}
-.prod-price{font-size:1.15rem;font-weight:800;color:var(--primary);margin-bottom:0.75rem}
-.prod-price .old-price{font-size:0.8rem;color:var(--muted);text-decoration:line-through;font-weight:400;margin-left:0.4rem}
-.add-cart-btn{width:100%;background:var(--primary);color:#fff;border:none;padding:0.6rem;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.4rem}
-.add-cart-btn:hover{background:var(--primary2)}
-.add-cart-btn.added{background:var(--success)}
-.delivery-card{border:2px dashed var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;background:linear-gradient(135deg,#fff9f0,#fff)}
-.card-inner{background:linear-gradient(135deg,#e63946,#c1121f);border-radius:12px;padding:1.25rem;color:#fff;position:relative;overflow:hidden}
-.card-inner::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;border:40px solid rgba(255,255,255,0.05);border-radius:50%}
-.card-inner::after{content:'';position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;border:30px solid rgba(255,255,255,0.05);border-radius:50%}
-.card-chip{width:38px;height:28px;background:linear-gradient(135deg,#ffd60a,#e8a000);border-radius:5px;margin-bottom:1.2rem}
-.card-num{font-size:1.1rem;letter-spacing:3px;font-weight:700;margin-bottom:0.75rem;font-family:monospace}
-.card-row{display:flex;justify-content:space-between;font-size:0.78rem;opacity:0.85}
-.card-label{font-size:0.65rem;opacity:0.65;margin-bottom:0.1rem}
-.card-location{font-size:0.75rem;text-align:center;margin-top:0.75rem;color:var(--muted);font-weight:600}
+/* ═══ PAGES ═══ */
+.page{display:none;min-height:100vh}
+.page.show{display:block}
 
-.back-btn{background:var(--primary);color:#fff;border:none;padding:0.8rem 2rem;border-radius:10px;font-family:inherit;font-weight:800;cursor:pointer;font-size:0.95rem}
-/* ===== TOPBAR ===== */
-.topbar{background:var(--dark);color:rgba(255,255,255,0.75);font-size:0.75rem;padding:0.4rem 1.5rem;text-align:center;display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap}
-.topbar span{display:flex;align-items:center;gap:0.3rem}
-.cart-panel{position:fixed;right:0;top:0;bottom:0;width:380px;background:#fff;z-index:150;box-shadow:-4px 0 30px rgba(0,0,0,0.12);display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s ease}
-.cart-panel.open{transform:translateX(0)}
-.cart-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.cart-header h3{font-size:1.1rem;font-weight:800}
-.cart-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted)}
-.cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem}
-.cart-empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
-.cart-empty-icon{font-size:3rem;margin-bottom:0.75rem}
-.cart-item{display:flex;gap:0.75rem;padding:0.9rem 0;border-bottom:1px solid var(--border);align-items:center}
-.cart-item-img{font-size:2.2rem;width:50px;height:50px;background:var(--bg);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cart-item-info{flex:1}
-.cart-item-name{font-size:0.85rem;font-weight:700;margin-bottom:0.2rem}
-.cart-item-price{font-size:0.88rem;color:var(--primary);font-weight:700}
-.cart-item-qty{display:flex;align-items:center;gap:0.5rem;margin-top:0.3rem}
-.qty-btn{background:var(--bg);border:1px solid var(--border);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;font-weight:700}
-.qty-num{font-size:0.88rem;font-weight:700;min-width:20px;text-align:center}
-.cart-item-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:1.1rem;transition:color 0.2s}
-.cart-item-del:hover{color:var(--primary)}
-.cart-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--border)}
-.cart-total-row{display:flex;justify-content:space-between;font-size:0.88rem;color:var(--muted);margin-bottom:0.4rem}
-.cart-total-big{display:flex;justify-content:space-between;font-size:1.2rem;font-weight:800;margin-bottom:1rem}
-.checkout-btn{width:100%;background:var(--primary);color:#fff;border:none;padding:0.9rem;border-radius:10px;font-family:inherit;font-weight:800;font-size:1rem;cursor:pointer;transition:all 0.2s}
-.checkout-btn:hover{background:var(--primary2)}
+/* ═══ AUTH ═══ */
+#pg-auth{background:linear-gradient(160deg,#0A0E1A 0%,#1A2340 50%,#0A2E5C 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;min-height:100vh}
+.auth-card{background:#fff;border-radius:24px;padding:36px 32px;width:100%;max-width:420px;box-shadow:0 24px 64px rgba(0,0,0,.35)}
+.brand-big{text-align:center;margin-bottom:28px}
+.brand-big .mark{display:inline-flex;align-items:center;gap:8px;margin-bottom:8px}
+.brand-big .icon{width:42px;height:42px;background:var(--red);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.brand-big .icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.brand-big h1{font-size:26px;font-weight:900;color:var(--dark)}
+.brand-big h1 span{color:var(--red)}
+.brand-big p{font-size:13px;color:var(--muted);margin-top:4px}
+.tabs{display:flex;background:#F3F4F6;border-radius:12px;padding:4px;gap:4px;margin-bottom:24px}
+.tab{flex:1;padding:10px;text-align:center;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600;color:var(--muted);transition:.2s;border:none;background:none}
+.tab.on{background:#fff;color:var(--dark);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.field{margin-bottom:16px}
+.field label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px;letter-spacing:.4px;text-transform:uppercase}
+.field input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:.2s;color:var(--text)}
+.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,109,255,.1)}
+.field .err{font-size:12px;color:var(--red);margin-top:5px;display:none}
+.abtn{width:100%;padding:14px;background:var(--red);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:.2s;margin-top:4px}
+.abtn:hover{background:var(--red2)}
+.or-line{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--muted);font-size:12px}
+.or-line::before,.or-line::after{content:'';flex:1;height:1px;background:var(--border)}
+.gbtn{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:var(--dark);display:flex;align-items:center;justify-content:center;gap:8px}
+.gbtn:hover{background:#F3F4F6}
 
-/* ===== HEADER ===== */
-header{background:var(--red);color:#fff;padding:0 1.5rem;position:sticky;top:0;z-index:200;box-shadow:0 3px 16px rgba(230,57,70,0.5)}
-.header-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:1rem;height:64px}
-.logo{font-size:1.5rem;font-weight:900;cursor:pointer;white-space:nowrap;letter-spacing:-0.5px}
-.logo span{color:var(--yellow)}
-.search-wrap{flex:1;max-width:520px;display:flex;position:relative}
-.search-wrap input{flex:1;padding:0.65rem 1rem;border:none;border-radius:10px 0 0 10px;font-size:0.9rem;outline:none;background:#fff}
-.search-wrap select{border:none;border-left:1px solid #ddd;padding:0 0.7rem;font-size:0.8rem;outline:none;background:#f9f9f9;color:var(--dark);cursor:pointer}
-.search-wrap button{background:var(--yellow);color:var(--dark);border:none;padding:0 1.2rem;border-radius:0 10px 10px 0;cursor:pointer;font-size:1rem;font-weight:800;transition:opacity 0.2s}
-.search-wrap button:hover{opacity:0.85}
-.header-right{display:flex;align-items:center;gap:0.6rem;margin-left:auto}
-.hdr-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:#fff;cursor:pointer;font-size:0.82rem;padding:0.45rem 0.9rem;border-radius:8px;font-weight:700;transition:all 0.2s;white-space:nowrap;display:flex;align-items:center;gap:0.4rem}
-.hdr-btn:hover{background:rgba(255,255,255,0.28)}
-.cart-count{background:var(--yellow);color:var(--dark);border-radius:50%;width:20px;height:20px;font-size:0.7rem;font-weight:900;display:flex;align-items:center;justify-content:center}
-.user-badge{display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;font-weight:700}
-.user-av{width:32px;height:32px;background:var(--yellow);color:var(--dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.82rem;cursor:pointer}
+/* ═══ NAVBAR ═══ */
+.navbar{background:var(--dark);height:58px;display:flex;align-items:center;padding:0 16px;gap:12px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.nb-logo{font-size:17px;font-weight:900;color:#fff;white-space:nowrap}
+.nb-logo span{color:var(--red)}
+.nb-search{flex:1;background:rgba(255,255,255,.1);border-radius:20px;display:flex;align-items:center;padding:8px 14px;gap:8px;border:1px solid rgba(255,255,255,.08)}
+.nb-search svg{width:16px;height:16px;fill:none;stroke:rgba(255,255,255,.5);stroke-width:2;flex-shrink:0}
+.nb-search input{background:none;border:none;outline:none;color:#fff;font-size:13px;width:100%;font-family:inherit}
+.nb-search input::placeholder{color:rgba(255,255,255,.4)}
+.nb-icons{display:flex;gap:16px;align-items:center}
+.nbi{position:relative;cursor:pointer}
+.nbi svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.nbi-badge{position:absolute;top:-6px;right:-7px;background:var(--red);color:#fff;font-size:9px;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-weight:800;border:2px solid var(--dark)}
 
-/* ===== NAV MENU ===== */
-.nav-menu{background:#fff;border-bottom:1px solid var(--border);padding:0 1.5rem}
-.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:0;height:42px;overflow-x:auto;white-space:nowrap}
-.nav-inner::-webkit-scrollbar{height:0}
-.nav-link{font-size:0.83rem;font-weight:700;color:var(--muted);padding:0 1rem;height:100%;display:inline-flex;align-items:center;gap:0.35rem;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
-.nav-link:hover,.nav-link.active{color:var(--red);border-bottom-color:var(--red)}
+/* ═══ CATS ═══ */
+.cats-bar{background:#fff;border-bottom:1px solid var(--border);padding:12px 16px;display:flex;gap:8px;overflow-x:auto}
+.cats-bar::-webkit-scrollbar{height:3px}
+.cats-bar::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+.citem{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;flex-shrink:0}
+.citem-ico{width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid transparent;transition:.2s;background:#F7F8FA}
+.citem.on .citem-ico{border-color:var(--red);background:#FFF0F1}
+.citem span{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.2px}
+.citem.on span{color:var(--red)}
 
-/* ===== PROMO BANNER ===== */
-.promo-banner{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);color:#fff;padding:3rem 1.5rem;position:relative;overflow:hidden}
-.promo-banner::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;border:80px solid rgba(255,214,10,0.06);border-radius:50%}
-.promo-banner::after{content:'';position:absolute;bottom:-60px;left:20%;width:300px;height:300px;border:60px solid rgba(230,57,70,0.06);border-radius:50%}
-.promo-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
-.promo-text h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;line-height:1.15;margin-bottom:0.75rem}
-.promo-text h1 em{color:var(--yellow);font-style:normal}
-.promo-text p{color:rgba(255,255,255,0.65);font-size:0.95rem;margin-bottom:1.25rem;line-height:1.6}
-.promo-badges{display:flex;gap:0.6rem;flex-wrap:wrap}
-.promo-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);padding:0.35rem 0.9rem;border-radius:20px;font-size:0.78rem;backdrop-filter:blur(4px)}
-.promo-stats{display:flex;flex-direction:column;gap:1rem;min-width:180px}
-.promo-stat{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:1rem 1.25rem;text-align:center;backdrop-filter:blur(8px)}
-.promo-stat .num{font-size:1.8rem;font-weight:900;color:var(--yellow);line-height:1}
-.promo-stat .lbl{font-size:0.72rem;color:rgba(255,255,255,0.6);margin-top:0.2rem}
+/* ═══ HERO ═══ */
+.hero{margin:14px 14px 0;border-radius:20px;background:linear-gradient(135deg,#0A0E1A 0%,#1A2340 60%,#0A2E5C 100%);color:#fff;padding:24px 20px;position:relative;overflow:hidden}
+.hero-tag{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;letter-spacing:.5px}
+.hero h2{font-size:22px;font-weight:900;line-height:1.2;margin-bottom:8px}
+.hero h2 span{color:#FFD700}
+.hero p{font-size:13px;opacity:.7;margin-bottom:16px;line-height:1.5}
+.hero-cta{display:flex;gap:10px}
+.hero-btn{padding:10px 20px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit}
+.hero-btn.prim{background:var(--red);color:#fff}
+.hero-btn.sec{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.hero-deco{position:absolute;right:-10px;bottom:-10px;font-size:90px;opacity:.15;transform:rotate(-10deg)}
+.hero-dots{display:flex;gap:6px;margin-top:16px}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer}
+.dot.on{background:#fff;width:24px;border-radius:4px}
 
-/* ===== FLASH SALE ===== */
-.flash-sale{background:#fff;border-bottom:1px solid var(--border);padding:0.75rem 1.5rem}
-.flash-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:1.5rem;overflow-x:auto}
-.flash-title{display:flex;align-items:center;gap:0.5rem;white-space:nowrap}
-.flash-title span:first-child{background:var(--red);color:#fff;font-size:0.75rem;font-weight:800;padding:0.3rem 0.75rem;border-radius:6px}
-.flash-timer{display:flex;align-items:center;gap:0.3rem;font-family:monospace;font-weight:900}
-.timer-block{background:var(--dark);color:var(--yellow);width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.9rem}
-.timer-sep{font-weight:900;color:var(--red);font-size:1.1rem}
-.flash-items{display:flex;gap:0.75rem;overflow-x:auto;padding-bottom:4px}
-.flash-items::-webkit-scrollbar{height:3px}
-.flash-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0.6rem 1rem;display:flex;align-items:center;gap:0.75rem;cursor:pointer;transition:all 0.2s;white-space:nowrap;flex-shrink:0}
-.flash-item:hover{border-color:var(--red);background:#fff5f5}
-.flash-item-emoji{font-size:1.6rem}
-.flash-item-name{font-size:0.8rem;font-weight:700}
-.flash-item-price{font-size:0.78rem;color:var(--red);font-weight:800}
-.flash-item-disc{font-size:0.7rem;background:#fff0f0;color:var(--red);border-radius:4px;padding:1px 5px;font-weight:800}
+/* ═══ PROMO STRIP ═══ */
+.pstrip{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px}
+.pbox{border-radius:16px;padding:14px 16px;cursor:pointer;position:relative;overflow:hidden}
+.pbox.r{background:linear-gradient(135deg,#E8192C,#FF4D6A)}
+.pbox.b{background:linear-gradient(135deg,#1A6DFF,#4D9FFF)}
+.pbox.g{background:linear-gradient(135deg,#00A651,#4DCC7A)}
+.pbox.o{background:linear-gradient(135deg,#FF6B00,#FF9A4D)}
+.pbox-tag{font-size:10px;color:rgba(255,255,255,.8);font-weight:600;margin-bottom:3px}
+.pbox-title{font-size:14px;font-weight:800;color:#fff}
+.pbox-sub{font-size:11px;color:rgba(255,255,255,.75);margin-top:2px}
+.pbox-emo{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:30px;opacity:.5}
 
-/* ===== CATS ===== */
-.cats-section{background:#fff;border-bottom:1px solid var(--border);padding:1.25rem 1.5rem}
-.cats-inner2{max-width:1280px;margin:0 auto}
-.cats-title{font-size:0.75rem;font-weight:800;color:var(--muted);letter-spacing:0.08em;margin-bottom:0.75rem}
-.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:0.75rem}
-.cat-card{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:0.75rem 0.5rem;text-align:center;cursor:pointer;transition:all 0.22s}
-.cat-card:hover,.cat-card.active{border-color:var(--red);background:#fff5f5;transform:translateY(-2px)}
-.cat-card.active .cat-icon{transform:scale(1.1)}
-.cat-icon{font-size:1.8rem;margin-bottom:0.35rem;transition:transform 0.2s}
-.cat-label{font-size:0.72rem;font-weight:700;color:var(--dark)}
-.cat-count{font-size:0.65rem;color:var(--muted)}
+/* ═══ SECTION ═══ */
+.sec{padding:6px 14px 0}
+.sec-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sec-row h3{font-size:16px;font-weight:800;color:var(--dark)}
+.sec-row a{font-size:12px;color:var(--blue);font-weight:600;cursor:pointer}
+.sort-bar{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px}
+.sort-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:#fff;color:var(--muted);white-space:nowrap;transition:.2s}
+.sort-btn.on{background:var(--dark);color:#fff;border-color:var(--dark)}
 
-/* ===== SORT BAR ===== */
-.sort-bar{max-width:1280px;margin:1.25rem auto 0;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem}
-.sort-left{font-size:0.88rem;color:var(--muted);font-weight:600}
-.sort-left strong{color:var(--dark)}
-.sort-btns{display:flex;gap:0.5rem;flex-wrap:wrap}
-.sort-btn{background:#fff;border:1px solid var(--border);padding:0.4rem 0.9rem;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;color:var(--muted)}
-.sort-btn:hover,.sort-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
-.view-btns{display:flex;gap:0.4rem}
-.view-btn{width:32px;height:32px;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.2s}
-.view-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
+/* ═══ PRODUCT GRID ═══ */
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding-bottom:90px}
+.pc{background:#fff;border-radius:18px;overflow:hidden;cursor:pointer;transition:.25s;position:relative;border:1px solid var(--border)}
+.pc:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+.pc-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:64px;background:#F7F8FA;position:relative}
+.pc-tag{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:10px;font-size:10px;font-weight:800;color:#fff;letter-spacing:.3px}
+.pc-tag.sale{background:var(--red)}.pc-tag.new{background:var(--green)}.pc-tag.hot{background:var(--orange)}
+.pc-wish{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.92);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;backdrop-filter:blur(4px)}
+.pc-wish svg{width:16px;height:16px;fill:none;stroke:#ccc;stroke-width:2;transition:.2s}
+.pc-wish.on svg{fill:var(--red);stroke:var(--red)}
+.pc-body{padding:12px 12px 14px}
+.pc-name{font-size:13px;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.pc-brand{font-size:11px;color:var(--muted);margin-bottom:5px}
+.pc-stars{font-size:11px;color:#F59E0B;margin-bottom:6px;display:flex;align-items:center;gap:3px}
+.pc-stars span{font-size:11px;color:var(--muted)}
+.pc-price{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.pc-now{font-size:16px;font-weight:900;color:var(--red)}
+.pc-old{font-size:11px;color:#CBD5E1;text-decoration:line-through}
+.pc-disc{font-size:10px;font-weight:700;background:#FFF0F1;color:var(--red);padding:2px 6px;border-radius:6px}
+.pc-add{width:100%;padding:9px;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:.2s;background:var(--dark);color:#fff;letter-spacing:.2px}
+.pc-add:hover{background:var(--red)}
+.pc-add.done{background:#E6FAF1;color:var(--green);border:1.5px solid #B7EDD4}
 
-/* ===== PRODUCTS GRID ===== */
-.main-wrap{max-width:1280px;margin:0 auto;padding:1rem 1.5rem 3rem;display:grid;grid-template-columns:220px 1fr;gap:1.5rem}
-.sidebar{display:flex;flex-direction:column;gap:1rem}
-.sidebar-card{background:#fff;border-radius:14px;padding:1.25rem;box-shadow:var(--shadow)}
-.sidebar-title{font-size:0.82rem;font-weight:800;color:var(--muted);letter-spacing:0.07em;margin-bottom:1rem;text-transform:uppercase}
-.price-inputs{display:flex;gap:0.5rem;align-items:center;margin-bottom:0.75rem}
-.price-inputs input{flex:1;padding:0.5rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;outline:none}
-.price-inputs input:focus{border-color:var(--red)}
-.price-sep{color:var(--muted);font-weight:700}
-.filter-apply{width:100%;background:var(--red);color:#fff;border:none;padding:0.6rem;border-radius:8px;font-weight:800;cursor:pointer;font-size:0.85rem;transition:opacity 0.2s}
-.filter-apply:hover{opacity:0.88}
-.rating-filter{display:flex;flex-direction:column;gap:0.4rem}
-.rating-row{display:flex;align-items:center;gap:0.5rem;cursor:pointer;padding:0.3rem 0.4rem;border-radius:6px;transition:background 0.2s}
-.rating-row:hover{background:var(--bg)}
-.rating-row input[type=radio]{accent-color:var(--red)}
-.rating-stars{color:#ffc300;font-size:0.85rem;letter-spacing:1px}
-.rating-count{font-size:0.75rem;color:var(--muted)}
-.brand-list{display:flex;flex-direction:column;gap:0.35rem}
-.brand-item{display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.84rem;padding:0.3rem;border-radius:6px;transition:background 0.2s}
-.brand-item:hover{background:var(--bg)}
-.brand-item input{accent-color:var(--red)}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
-.products-grid.list-view{grid-template-columns:1fr}
-.products-grid.list-view .prod-card{display:flex;flex-direction:row;height:130px}
-.products-grid.list-view .prod-img{width:130px;flex-shrink:0;height:100%}
-.products-grid.list-view .prod-body{display:flex;align-items:flex-start;gap:1.5rem;flex:1}
-.products-grid.list-view .prod-body-left{flex:1}
-.products-grid.list-view .prod-body-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;height:100%;padding:0.75rem 0}
-.products-grid.list-view .prod-desc{display:block!important}
-.prod-card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);transition:all 0.25s;cursor:pointer;border:1.5px solid transparent;position:relative}
-.prod-card:hover{transform:translateY(-5px);box-shadow:0 10px 32px rgba(0,0,0,0.12);border-color:rgba(230,57,70,0.2)}
-.prod-img{height:170px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;overflow:hidden}
-.prod-badge{position:absolute;top:8px;left:8px;font-size:0.65rem;font-weight:900;padding:3px 8px;border-radius:5px}
-.badge-new{background:var(--blue);color:#fff}
-.badge-hot{background:var(--orange);color:#fff}
-.badge-sale{background:var(--red);color:#fff}
-.prod-wish{position:absolute;top:8px;right:8px;width:30px;height:30px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.12);transition:all 0.2s;border:none}
-.prod-wish:hover{transform:scale(1.1)}
-.prod-wish.wished{background:#fff0f0}
-.prod-body{padding:0.9rem}
-.prod-name{font-weight:800;font-size:0.88rem;margin-bottom:0.2rem;line-height:1.35;display:-webkit-box;-webkit-line:2;-webkit-box-orient:vertical;overflow:hidden}
-.prod-desc{font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;line-height:1.5;display:none}
-.prod-rating{display:flex;align-items:center;gap:0.3rem;margin-bottom:0.5rem}
-.stars{color:#ffc300;font-size:0.78rem}
-.rating-num{font-size:0.72rem;color:var(--muted)}
-.prod-seller{font-size:0.72rem;color:var(--muted);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.3rem}
-.verified{color:var(--green)}
-.prod-price{margin-bottom:0.7rem}
-.price-main{font-size:1.1rem;font-weight:900;color:var(--red)}
-.price-old{font-size:0.78rem;color:var(--muted);text-decoration:line-through;margin-left:0.4rem;font-weight:400}
-.price-disc{font-size:0.72rem;background:#fff0f0;color:var(--red);border-radius:4px;padding:1px 5px;font-weight:800;margin-left:0.4rem}
-.installment{font-size:0.72rem;color:var(--green);font-weight:700;margin-top:0.15rem}
-.add-cart-btn{width:100%;background:var(--red);color:#fff;border:none;padding:0.6rem;border-radius:9px;font-weight:800;font-size:0.85rem;cursor:pointer;transition:all 0.22s;display:flex;align-items:center;justify-content:center;gap:0.4rem}
-.add-cart-btn:hover{background:var(--red2);transform:translateY(-1px)}
-.add-cart-btn.added{background:var(--green)}
+/* ═══ BOTTOM NAV ═══ */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;padding:10px 0 8px;z-index:100;box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--muted);font-size:10px;font-weight:600;position:relative;transition:.2s}
+.bni svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.bni.on{color:var(--red)}
+.bni-dot{position:absolute;top:0px;right:22px;background:var(--red);color:#fff;font-size:8px;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;font-weight:800;display:none}
 
-/* ===== PRODUCT DETAIL MODAL ===== */
-.prod-detail{max-width:700px;padding:0}
-.pd-top{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.pd-gallery{background:var(--bg);padding:2.5rem;display:flex;align-items:center;justify-content:center;font-size:8rem;border-radius:20px 0 0 0;position:relative}
-.pd-info{padding:2rem}
-.pd-badge{font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:5px;display:inline-block;margin-bottom:0.75rem}
-.pd-name{font-size:1.25rem;font-weight:900;margin-bottom:0.5rem;line-height:1.3}
-.pd-rating-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)}
-.pd-price-big{font-size:2rem;font-weight:900;color:var(--red);line-height:1}
-.pd-price-row{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem}
-.pd-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1rem}
-.pd-features{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.25rem}
-.pd-feat{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem}
-.pd-feat span:first-child{width:20px;text-align:center}
-.pd-qty-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
-.qty-ctrl{display:flex;align-items:center;gap:0.5rem;background:var(--bg);border-radius:10px;padding:0.35rem 0.75rem}
-.qty-b{background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--dark);font-weight:900;padding:0 0.25rem}
-.qty-v{font-size:1rem;font-weight:800;min-width:24px;text-align:center}
-.pd-actions{display:flex;gap:0.75rem}
-.pd-buy-btn{flex:1;background:var(--red);color:#fff;border:none;padding:0.85rem;border-radius:10px;font-weight:800;cursor:pointer;font-size:0.95rem;transition:all 0.2s}
-.pd-buy-btn:hover{background:var(--red2)}
-.pd-wish-btn{width:46px;height:46px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:all 0.2s;flex-shrink:0}
-.pd-reviews{padding:1.5rem 2rem;border-top:1px solid var(--border)}
-.pd-review-title{font-size:0.95rem;font-weight:800;margin-bottom:1rem}
-.review-item{display:flex;gap:0.75rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
-.review-item:last-child{border-bottom:none;margin-bottom:0}
-.rev-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e63946,#ffd60a);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;flex-shrink:0}
-.rev-name{font-size:0.83rem;font-weight:700}
-.rev-date{font-size:0.72rem;color:var(--muted)}
-.rev-text{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-top:0.3rem}
-
-/* ===== CART ===== */
-.cart-panel{position:fixed;right:0;top:0;bottom:0;width:400px;background:#fff;z-index:300;box-shadow:-4px 0 40px rgba(0,0,0,0.15);display:flex;flex-direction:column;transform:translateX(110%);transition:transform 0.3s ease}
-.cart-panel.open{transform:translateX(0)}
-.cart-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--red);color:#fff}
-.cart-header h3{font-size:1.05rem;font-weight:800}
-.cart-close{background:rgba(255,255,255,0.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center}
-.cart-empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:0.75rem}
-.cart-empty-state .icon{font-size:4rem}
-.cart-empty-state p{font-size:0.9rem;font-weight:700}
-.cart-items-list{flex:1;overflow-y:auto;padding:0.75rem 1.25rem}
-.cart-item{display:flex;gap:0.75rem;padding:0.85rem 0;border-bottom:1px solid var(--border);align-items:flex-start}
-.ci-img{width:54px;height:54px;background:var(--bg);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+/* ═══ CART DRAWER ═══ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;backdrop-filter:blur(3px)}
+.overlay.show{display:block}
+.drawer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:24px 24px 0 0;z-index:400;transform:translateY(100%);transition:.35s cubic-bezier(.32,1,.46,1);max-height:85vh;display:flex;flex-direction:column}
+.drawer.open{transform:translateY(0)}
+.drawer-handle{width:36px;height:4px;background:#E5E7EB;border-radius:2px;margin:12px auto 0}
+.drawer-head{padding:14px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.drawer-head h3{font-size:16px;font-weight:800}
+.drawer-cls{background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:.2s}
+.drawer-cls:hover{background:#F3F4F6}
+.drawer-body{flex:1;overflow-y:auto;padding:8px 0}
+.ci{display:flex;gap:12px;align-items:flex-start;padding:14px 20px;border-bottom:1px solid var(--border)}
+.ci-img{width:58px;height:58px;background:#F7F8FA;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0}
 .ci-info{flex:1}
-.ci-name{font-size:0.84rem;font-weight:700;line-height:1.3;margin-bottom:0.2rem}
-.ci-price{font-size:0.88rem;color:var(--red);font-weight:800}
-.ci-qty{display:flex;align-items:center;gap:0.4rem;margin-top:0.35rem}
-.ci-qb{background:var(--bg);border:1px solid var(--border);width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:1rem;font-weight:800;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.ci-qb:hover{background:var(--red);color:#fff;border-color:var(--red)}
-.ci-qn{font-size:0.88rem;font-weight:800;min-width:22px;text-align:center}
-.ci-del{background:none;border:none;color:#ddd;cursor:pointer;font-size:1.1rem;margin-left:0.25rem;transition:color 0.2s}
+.ci-name{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.ci-brand{font-size:12px;color:var(--muted);margin-bottom:6px}
+.ci-price{font-size:15px;font-weight:800;color:var(--red)}
+.ci-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.ci-qty{display:flex;align-items:center;gap:10px;background:#F7F8FA;border-radius:10px;padding:4px 8px}
+.qb{background:#fff;border:1px solid var(--border);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--dark);transition:.2s}
+.qb:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.ci-del{background:none;border:none;cursor:pointer;color:#CBD5E1;font-size:16px;padding:4px;transition:.2s}
 .ci-del:hover{color:var(--red)}
-.cart-promos{padding:0.75rem 1.25rem;border-bottom:1px solid var(--border)}
-.promo-input-row{display:flex;gap:0.5rem}
-.promo-input-row input{flex:1;padding:0.55rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;outline:none}
-.promo-input-row input:focus{border-color:var(--red)}
-.promo-apply{background:var(--dark);color:#fff;border:none;padding:0.55rem 1rem;border-radius:8px;font-weight:800;cursor:pointer;font-size:0.82rem}
-.promo-success{font-size:0.78rem;color:var(--green);font-weight:700;margin-top:0.4rem;display:none}
-.cart-footer{padding:1.25rem;border-top:1px solid var(--border)}
-.cart-summary{background:var(--bg);border-radius:12px;padding:1rem;margin-bottom:1rem}
-.sum-row{display:flex;justify-content:space-between;font-size:0.84rem;margin-bottom:0.4rem;color:var(--muted)}
-.sum-row.total{font-size:1rem;font-weight:900;color:var(--dark);margin-top:0.5rem;padding-top:0.5rem;border-top:1.5px solid var(--border);margin-bottom:0}
-.sum-row.total span:last-child{color:var(--red)}
-.checkout-btn{width:100%;background:var(--red);color:#fff;border:none;padding:1rem;border-radius:12px;font-weight:900;font-size:1rem;cursor:pointer;transition:all 0.2s}
-.checkout-btn:hover{background:var(--red2);transform:translateY(-1px)}
-.cart-continue{text-align:center;font-size:0.8rem;color:var(--muted);margin-top:0.6rem;cursor:pointer;font-weight:700}
-.cart-continue:hover{color:var(--red)}
+.drawer-foot{flex-shrink:0;padding:16px 20px;border-top:1px solid var(--border);background:#fff}
+.order-summary{background:#F7F8FA;border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.os-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px;color:var(--muted)}
+.os-row:last-child{margin:0;padding-top:10px;border-top:1px dashed var(--border);font-size:15px;font-weight:800;color:var(--dark)}
+.os-row .val{font-weight:600;color:var(--dark)}
+.order-btn{width:100%;padding:15px;background:var(--red);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.3px;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.order-btn:hover{background:var(--red2)}
+.empty-cart{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-cart div{font-size:52px;margin-bottom:12px}
+.empty-cart p{font-size:14px;font-weight:600;color:var(--dark);margin-bottom:4px}
+.empty-cart small{font-size:12px}
 
-/* ===== MODAL BASE ===== */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:400;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px);overflow-y:auto}
-.modal{background:#fff;border-radius:22px;width:100%;max-width:420px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,0.25);animation:mIn 0.28s ease;max-height:90vh;overflow-y:auto}
-@keyframes mIn{from{transform:translateY(30px) scale(0.95);opacity:0}to{transform:none;opacity:1}}
-.modal-pad{padding:2rem}
-.modal-close{position:absolute;top:1rem;right:1rem;background:var(--bg);border:none;width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);z-index:1}
-.modal-logo{font-size:2rem;margin-bottom:0.5rem}
-.modal-title{font-size:1.5rem;font-weight:900;margin-bottom:0.2rem}
-.modal-sub{font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem}
-.form-group{margin-bottom:1rem}
-.form-label{font-size:0.78rem;font-weight:800;display:block;margin-bottom:0.4rem;color:var(--dark);letter-spacing:0.02em}
-.form-input{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-size:0.92rem;transition:border-color 0.2s;outline:none;color:var(--dark)}
-.form-input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(230,57,70,0.08)}
-.form-input::placeholder{color:#bbb}
-.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
-.form-err{color:var(--red);font-size:0.78rem;margin-top:0.4rem;display:none;font-weight:700}
-.submit-btn{width:100%;background:var(--red);color:#fff;border:none;padding:0.95rem;border-radius:11px;font-weight:900;font-size:1rem;cursor:pointer;margin-top:0.5rem;transition:all 0.2s}
-.submit-btn:hover{background:var(--red2);transform:translateY(-1px)}
-.form-switch{font-size:0.82rem;color:var(--muted);text-align:center;margin-top:1rem}
-.form-switch a{color:var(--red);font-weight:800;cursor:pointer}
-.social-login{display:flex;gap:0.75rem;margin-bottom:1.25rem}
-.soc-btn{flex:1;border:1.5px solid var(--border);background:#fff;padding:0.65rem;border-radius:10px;cursor:pointer;font-size:0.82rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.2s}
-.soc-btn:hover{border-color:var(--red);background:#fff5f5}
-.divider{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;font-size:0.8rem;color:var(--muted)}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.agree-row{display:flex;align-items:flex-start;gap:0.5rem;font-size:0.78rem;color:var(--muted);margin-top:0.5rem}
-.agree-row input{accent-color:var(--red);margin-top:2px}
-.agree-row a{color:var(--red);font-weight:700}
+/* ═══ ORDER CONFIRM ═══ */
+#pg-confirm{display:none;background:var(--dark);min-height:100vh;align-items:center;justify-content:center;padding:24px;flex-direction:column;text-align:center}
+#pg-confirm.show{display:flex}
+.confirm-card{background:#fff;border-radius:24px;padding:40px 32px;max-width:380px;width:100%}
+.confirm-ico{width:80px;height:80px;background:#E6FAF1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px}
+.confirm-card h2{font-size:22px;font-weight:900;color:var(--dark);margin-bottom:8px}
+.confirm-card p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:24px}
+.confirm-details{background:#F7F8FA;border-radius:14px;padding:16px;margin-bottom:20px;text-align:left}
+.cd-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px}
+.cd-row:last-child{margin:0;font-weight:800;font-size:15px;padding-top:10px;border-top:1px dashed var(--border)}
+.cd-lbl{color:var(--muted)}.cd-val{font-weight:600;color:var(--dark)}
+.confirm-btn{width:100%;padding:14px;background:var(--dark);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 
-/* ===== CHECKOUT ===== */
-.checkout-modal{max-width:580px}
-.checkout-steps{display:flex;gap:0;margin-bottom:1.75rem;border-bottom:2px solid var(--border)}
-.step{flex:1;text-align:center;padding:0.6rem;font-size:0.8rem;font-weight:700;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;cursor:default}
-.step.active{color:var(--red);border-bottom-color:var(--red)}
-.step.done{color:var(--green)}
-.checkout-step-content{display:none}
-.checkout-step-content.active{display:block}
-.co-items-list{background:var(--bg);border-radius:10px;padding:0.75rem;margin-bottom:1rem;max-height:150px;overflow-y:auto}
-.co-item{display:flex;justify-content:space-between;font-size:0.82rem;padding:0.3rem 0;border-bottom:1px solid var(--border)}
-.co-item:last-child{border-bottom:none}
-.co-totals{padding:0.5rem 0;border-top:2px solid var(--border);margin-top:0.5rem}
-.co-total-row{display:flex;justify-content:space-between;font-size:0.82rem;color:var(--muted);margin-bottom:0.3rem}
-.co-total-big{display:flex;justify-content:space-between;font-size:1.1rem;font-weight:900;margin-top:0.4rem}
-.co-total-big span:last-child{color:var(--red)}
-.payment-methods{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1rem}
-.pay-method{display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1rem;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;transition:all 0.2s}
-.pay-method:hover{border-color:var(--red)}
-.pay-method.selected{border-color:var(--red);background:#fff5f5}
-.pay-method input[type=radio]{accent-color:var(--red)}
-.pay-icon{font-size:1.5rem}
-.pay-name{font-weight:700;font-size:0.88rem}
-.pay-desc{font-size:0.75rem;color:var(--muted)}
-.step-btns{display:flex;gap:0.75rem;margin-top:1.25rem}
-.step-prev{flex:0 0 auto;background:var(--bg);border:1.5px solid var(--border);color:var(--dark);padding:0.85rem 1.25rem;border-radius:10px;font-weight:800;cursor:pointer;font-size:0.9rem;transition:all 0.2s}
-.step-prev:hover{border-color:var(--dark)}
-.step-next{flex:1;background:var(--red);color:#fff;border:none;padding:0.85rem;border-radius:10px;font-weight:900;font-size:0.95rem;cursor:pointer;transition:all 0.2s}
-.step-next:hover{background:var(--red2)}
+/* ═══ PROFILE ═══ */
+#pg-profile{padding-bottom:80px}
+.prof-header{background:linear-gradient(135deg,var(--dark),#1A2340);padding:28px 20px 80px;position:relative;overflow:hidden}
+.prof-header::after{content:'';position:absolute;bottom:-40px;left:0;right:0;height:80px;background:var(--bg);border-radius:50% 50% 0 0}
+.prof-avt{width:80px;height:80px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#fff;margin:0 auto 12px;border:4px solid rgba(255,255,255,.2)}
+.prof-name{font-size:20px;font-weight:800;color:#fff;text-align:center}
+.prof-ph{font-size:13px;color:rgba(255,255,255,.6);text-align:center;margin-top:4px}
+.prof-stats{display:flex;gap:10px;padding:0 16px;margin-top:24px;position:relative;z-index:1}
+.ps-box{flex:1;background:#fff;border-radius:14px;padding:14px 10px;text-align:center;border:1px solid var(--border)}
+.ps-num{font-size:22px;font-weight:900;color:var(--dark)}
+.ps-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.prof-menu{background:#fff;border-radius:20px;margin:16px 16px 0;overflow:hidden;border:1px solid var(--border)}
+.pm-item{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--border);cursor:pointer;transition:.2s}
+.pm-item:hover{background:#F7F8FA}
+.pm-item:last-child{border:none}
+.pm-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.pm-txt{flex:1}
+.pm-title{font-size:14px;font-weight:700;color:var(--dark)}
+.pm-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.pm-arr{color:var(--muted);font-size:18px}
+.out-btn{margin:14px 16px 0;width:calc(100% - 32px);padding:14px;background:none;border:2px solid var(--red);color:var(--red);border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:.2s}
+.out-btn:hover{background:var(--red);color:#fff}
 
-/* ===== WISHLIST ===== */
-.wishlist-panel{position:fixed;left:0;top:0;bottom:0;width:360px;background:#fff;z-index:250;box-shadow:4px 0 40px rgba(0,0,0,0.15);display:flex;flex-direction:column;transform:translateX(-110%);transition:transform 0.3s ease}
-.wishlist-panel.open{transform:translateX(0)}
-.wl-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--dark);color:#fff}
-.wl-header h3{font-size:1rem;font-weight:800}
-.wl-close{background:rgba(255,255,255,0.15);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
-.wl-items{flex:1;overflow-y:auto;padding:1rem}
-.wl-item{display:flex;gap:0.75rem;background:#fff;border:1px solid var(--border);border-radius:12px;padding:0.75rem;margin-bottom:0.75rem;align-items:center}
-.wl-img{font-size:2rem;width:50px;height:50px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.wl-info{flex:1}
-.wl-name{font-size:0.83rem;font-weight:700}
-.wl-price{font-size:0.88rem;color:var(--red);font-weight:800;margin-top:0.15rem}
-.wl-actions{display:flex;flex-direction:column;gap:0.4rem}
-.wl-add{background:var(--red);color:#fff;border:none;padding:0.4rem 0.75rem;border-radius:7px;font-size:0.75rem;font-weight:800;cursor:pointer}
-.wl-del{background:none;border:1px solid var(--border);color:var(--muted);padding:0.3rem 0.6rem;border-radius:7px;font-size:0.75rem;cursor:pointer}
+/* ═══ TOAST ═══ */
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--dark);color:#fff;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:.3s;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ===== SUCCESS ===== */
-.success-page{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:2rem}
-.success-card{background:#fff;border-radius:24px;padding:2.5rem;max-width:560px;width:100%;box-shadow:0 10px 50px rgba(0,0,0,0.1)}
-.success-anim{font-size:5rem;margin-bottom:1rem;animation:pop 0.6s ease;display:block;text-align:center}
-@keyframes pop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
-.success-title{font-size:1.7rem;font-weight:900;color:var(--green);text-align:center;margin-bottom:0.5rem}
-.success-msg{color:var(--muted);text-align:center;font-size:0.9rem;line-height:1.7;margin-bottom:2rem}
-.order-info-card{background:linear-gradient(135deg,#f0fdf8,#e6f7f2);border:1.5px solid #a7f3d0;border-radius:16px;padding:1.25rem;margin-bottom:1.25rem}
-.oi-row{display:flex;justify-content:space-between;font-size:0.84rem;padding:0.4rem 0;border-bottom:1px solid rgba(0,0,0,0.05)}
-.oi-row:last-child{border-bottom:none}
-.oi-row span:first-child{color:var(--muted)}
-.oi-row span:last-child{font-weight:800}
-.delivery-box{background:linear-gradient(135deg,var(--dark),#16213e);color:#fff;border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.25rem}
-.db-icon{font-size:3rem;flex-shrink:0}
-.db-text h4{font-weight:900;margin-bottom:0.3rem}
-.db-text p{font-size:0.82rem;opacity:0.7;line-height:1.5}
-.loyalty-card{background:linear-gradient(135deg,#e63946 0%,#c1121f 40%,#9d0208 100%);color:#fff;border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
-.loyalty-card::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;border:50px solid rgba(255,255,255,0.05);border-radius:50%}
-.loyalty-card::after{content:'';position:absolute;bottom:-40px;left:10%;width:160px;height:160px;border:40px solid rgba(255,214,10,0.08);border-radius:50%}
-.lc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;position:relative;z-index:1}
-.lc-chip{width:44px;height:34px;background:linear-gradient(135deg,var(--yellow),#e8a000);border-radius:6px}
-.lc-logo{font-size:0.9rem;font-weight:900;opacity:0.9}
-.lc-num{font-size:1.2rem;letter-spacing:4px;font-family:monospace;font-weight:800;margin-bottom:1rem;position:relative;z-index:1}
-.lc-bottom{display:flex;justify-content:space-between;align-items:flex-end;position:relative;z-index:1}
-.lc-label{font-size:0.62rem;opacity:0.6;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.15rem}
-.lc-val{font-size:0.88rem;font-weight:800}
-.lc-nfc{font-size:1.6rem;opacity:0.7}
-.lc-location{text-align:center;font-size:0.75rem;color:var(--muted);margin-top:0.75rem;font-weight:700}
-.success-actions{display:flex;gap:0.75rem}
-.sa-btn{flex:1;padding:0.85rem;border-radius:11px;font-weight:900;font-size:0.9rem;cursor:pointer;border:none;transition:all 0.2s}
-.sa-primary{background:var(--red);color:#fff}
-.sa-primary:hover{background:var(--red2)}
-.sa-secondary{background:var(--bg);color:var(--dark);border:1.5px solid var(--border)!important}
-.sa-secondary:hover{border-color:var(--dark)!important}
-
-/* ===== PROFILE PAGE ===== */
-.profile-page{max-width:1000px;margin:2rem auto;padding:0 1.5rem 3rem;display:none}
-.profile-page.active{display:block}
-.profile-header{background:linear-gradient(135deg,var(--dark),#16213e);color:#fff;border-radius:20px;padding:2rem;display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem}
-.profile-av{width:72px;height:72px;background:var(--yellow);color:var(--dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;flex-shrink:0}
-.profile-name{font-size:1.4rem;font-weight:900}
-.profile-phone{font-size:0.9rem;opacity:0.7;margin-top:0.2rem}
-.profile-joined{font-size:0.78rem;opacity:0.5;margin-top:0.2rem}
-.profile-points{background:rgba(255,214,10,0.15);border:1px solid rgba(255,214,10,0.3);border-radius:10px;padding:0.5rem 1rem;margin-left:auto;text-align:center}
-.profile-points .pts{font-size:1.5rem;font-weight:900;color:var(--yellow)}
-.profile-points .pts-lbl{font-size:0.72rem;opacity:0.7}
-.profile-grid{display:grid;grid-template-columns:220px 1fr;gap:1.25rem}
-.profile-menu{background:#fff;border-radius:16px;padding:0.75rem;box-shadow:var(--shadow);height:fit-content}
-.pm-item{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:0.88rem;font-weight:700;color:var(--muted)}
-.pm-item:hover,.pm-item.active{background:var(--bg);color:var(--dark)}
-.pm-item.active{color:var(--red)}
-.pm-icon{font-size:1.1rem;width:24px;text-align:center}
-.profile-content{background:#fff;border-radius:16px;padding:1.5rem;box-shadow:var(--shadow);min-height:350px}
-.pc-section{display:none}
-.pc-section.active{display:block}
-.orders-list{display:flex;flex-direction:column;gap:0.75rem}
-.order-item{background:var(--bg);border:1.5px solid var(--border);border-radius:14px;padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.order-item-left .oi-id{font-size:0.82rem;font-weight:800;color:var(--red)}
-.order-item-left .oi-date{font-size:0.75rem;color:var(--muted);margin-top:0.15rem}
-.order-item-left .oi-items-preview{font-size:0.8rem;color:var(--dark);margin-top:0.25rem;font-weight:600}
-.order-status{padding:0.3rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:800}
-.status-delivered{background:#dcfce7;color:#16a34a}
-.status-on-way{background:#fef3c7;color:#d97706}
-.status-new{background:#ffe4e6;color:var(--red)}
-.order-total-right{font-size:1rem;font-weight:900;color:var(--red)}
-
-/* ===== TOAST ===== */
-.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark);color:#fff;padding:0.85rem 1.75rem;border-radius:12px;font-size:0.88rem;font-weight:700;z-index:9999;transition:transform 0.3s,opacity 0.3s;white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,0.25);display:flex;align-items:center;gap:0.5rem}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.t-green{background:var(--green)}
-.toast.t-red{background:var(--red)}
-
-/* ===== FOOTER ===== */
-footer{background:var(--dark);color:rgba(255,255,255,0.75);padding:3rem 1.5rem 1.5rem}
-.footer-inner{max-width:1280px;margin:0 auto}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2rem}
-.footer-brand .footer-logo{font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:0.75rem}
-.footer-brand .footer-logo span{color:var(--yellow)}
-.footer-brand p{font-size:0.82rem;line-height:1.7;margin-bottom:1rem}
-.footer-socials{display:flex;gap:0.5rem}
-.f-soc{width:36px;height:36px;background:rgba(255,255,255,0.08);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s;font-size:1rem}
-.f-soc:hover{background:var(--red)}
-.footer-col h4{font-size:0.82rem;font-weight:800;color:#fff;letter-spacing:0.08em;margin-bottom:0.75rem;text-transform:uppercase}
-.footer-col a{display:block;font-size:0.82rem;color:rgba(255,255,255,0.55);margin-bottom:0.4rem;cursor:pointer;transition:color 0.2s}
-.footer-col a:hover{color:#fff}
-.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:1.25rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;font-size:0.78rem}
-.payment-icons{display:flex;gap:0.4rem}
-.pay-ico{background:rgba(255,255,255,0.1);padding:0.25rem 0.6rem;border-radius:5px;font-size:0.72rem;font-weight:800;color:#fff}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:1024px){
-  .main-wrap{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .footer-grid{grid-template-columns:1fr 1fr}
-  .promo-stats{display:none}
-}
-@media(max-width:700px){
-  .cart-panel{width:100%}
-  .wishlist-panel{width:100%}
-  .products-grid{grid-template-columns:1fr 1fr;gap:0.75rem}
-  .prod-img{height:130px;font-size:3.5rem}
-  .topbar{display:none}
-  .promo-inner{grid-template-columns:1fr}
-  .profile-grid{grid-template-columns:1fr}
-  .pd-top{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr}
-}
+/* ═══ EMPTY STATE ═══ */
+.no-results{text-align:center;padding:60px 20px;grid-column:1/-1}
+.no-results div{font-size:48px;margin-bottom:12px}
+.no-results p{font-size:14px;color:var(--muted)}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
-<div class="topbar">
-  <span>🚚 Termez shahri bo'ylab 24 soatda yetkazib berish</span>
-  <span>📞 Qo'llab-quvvatlash: +998 76 220 00 00</span>
-  <span>✅ 30 kunlik qaytarish kafolati</span>
-</div>
+<!-- ══════ AUTH PAGE ══════ -->
+<div class="page show" id="pg-auth">
+  <div style="background:linear-gradient(160deg,#0A0E1A 0%,#1A2340 50%,#0A2E5C 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px">
+    <div class="auth-card">
+      <div class="brand-big">
+        <div class="mark">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+          <h1>Super<span>Bozor</span></h1>
+        </div>
+        <p>O'zbekistonning №1 online savdo platformasi</p>
+      </div>
 
-<!-- HEADER -->
-<header>
-  <div class="header-inner">
-    <div class="logo" onclick="showPage('shop')">Termez<span>Shop</span></div>
-    <div class="search-wrap">
-      <input type="text" id="searchInput" placeholder="Mahsulot qidiring..." oninput="filterProducts()">
-      <select id="searchCat" onchange="filterProducts()">
-        <option value="all">Barchasi</option>
-        <option value="elektronika">Elektronika</option>
-        <option value="kiyim">Kiyim</option>
-        <option value="oziq">Oziq-ovqat</option>
-        <option value="uy">Uy jihozi</option>
-        <option value="sport">Sport</option>
-        <option value="gozellik">Go'zallik</option>
-      </select>
-      <button onclick="filterProducts()">🔍</button>
-    </div>
-    <div class="header-right">
-      <button class="hdr-btn" onclick="toggleWishlist()">❤️ <span id="wishCount">0</span></button>
-      <button class="hdr-btn" onclick="toggleCart()">🛒 Savat <div class="cart-count" id="cartCount">0</div></button>
-      <div id="authArea"></div>
+      <div class="tabs">
+        <button class="tab on" id="t-in" onclick="switchTab('in')">Kirish</button>
+        <button class="tab" id="t-up" onclick="switchTab('up')">Ro'yxatdan o'tish</button>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="f-in">
+        <div class="field">
+          <label>Telefon / Email</label>
+          <input id="l-u" type="text" placeholder="+998 90 123 45 67">
+        </div>
+        <div class="field">
+          <label>Parol</label>
+          <input id="l-p" type="password" placeholder="Parolingizni kiriting">
+          <div class="err" id="l-err">☓ Telefon yoki parol xato!</div>
+        </div>
+        <button class="abtn" onclick="doLogin()">Kirish →</button>
+        <div class="or-line">yoki</div>
+        <button class="gbtn">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.05 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.55-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Google orqali kirish
+        </button>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="f-up" style="display:none">
+        <div class="field">
+          <label>Ism Familiya</label>
+          <input id="r-n" type="text" placeholder="Sardor Rahimov">
+        </div>
+        <div class="field">
+          <label>Telefon raqam</label>
+          <input id="r-ph" type="tel" placeholder="+998 90 123 45 67">
+        </div>
+        <div class="field">
+          <label>Email manzil</label>
+          <input id="r-e" type="email" placeholder="sardor@gmail.com">
+        </div>
+        <div class="field">
+          <label>Parol</label>
+          <input id="r-p" type="password" placeholder="Kamida 6 ta belgi">
+          <div class="err" id="r-err">Barcha maydonlarni to'ldiring!</div>
+        </div>
+        <button class="abtn" onclick="doReg()">Ro'yxatdan o'tish →</button>
+      </div>
     </div>
   </div>
-</header>
+</div>
 
+<!-- ══════ MAIN PAGE ══════ -->
+<div class="page" id="pg-main">
+  <nav class="navbar">
+    <div class="nb-logo">Super<span>Bozor</span></div>
+    <div class="nb-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Mahsulot, brend qidirish..." oninput="doSearch(this.value)">
+    </div>
+    <div class="nb-icons">
+      <div class="nbi" onclick="openCart()">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <div class="nbi-badge" id="nb-badge">0</div>
+      </div>
+    </div>
+  </nav>
 
-<!-- NAV -->
-<div class="nav-menu">
-  <div class="nav-inner">
-    <span class="nav-link active" onclick="setNav(this);showPage('shop')">🏠 Bosh sahifa</span>
-    <span class="nav-link" onclick="setNav(this);filterCatNav('elektronika')">📱 Elektronika</span>
-    <span class="nav-link" onclick="setNav(this);filterCatNav('kiyim')">👕 Kiyim-kechak</span>
-    <span class="nav-link" onclick="setNav(this);filterCatNav('oziq')">🍎 Oziq-ovqat</span>
-    <span class="nav-link" onclick="setNav(this);filterCatNav('uy')">🏠 Uy jihozi</span>
-    <span class="nav-link" onclick="setNav(this);filterCatNav('sport')">⚽ Sport</span>
-    <span class="nav-link" onclick="setNav(this);filterCatNav('gozellik')">💄 Go'zallik</span>
-    <span class="nav-link" onclick="setNav(this);showProfilePage()">👤 Profilim</span>
-    <span class="nav-link" style="color:var(--orange)" onclick="setNav(this);filterBadge('hot')">🔥 Top sotuvlar</span>
-    <span class="nav-link" style="color:var(--blue)" onclick="setNav(this);filterBadge('new')">✨ Yangi mahsulotlar</span>
+  <!-- CATS -->
+  <div class="cats-bar" id="cats-bar">
+    <div class="citem on" onclick="setCat('Hammasi',this)">
+      <div class="citem-ico">🛍️</div><span>Hammasi</span>
+    </div>
+    <div class="citem" onclick="setCat('Kiyim',this)">
+      <div class="citem-ico">👗</div><span>Kiyim</span>
+    </div>
+    <div class="citem" onclick="setCat('Elektronika',this)">
+      <div class="citem-ico">📱</div><span>Elektr.</span>
+    </div>
+    <div class="citem" onclick="setCat('Oziq-ovqat',this)">
+      <div class="citem-ico">🥦</div><span>Oziq</span>
+    </div>
+    <div class="citem" onclick="setCat('Poyabzal',this)">
+      <div class="citem-ico">👟</div><span>Poyabzal</span>
+    </div>
+    <div class="citem" onclick="setCat('Sport',this)">
+      <div class="citem-ico">⚽</div><span>Sport</span>
+    </div>
+    <div class="citem" onclick="setCat('Mebel',this)">
+      <div class="citem-ico">🪑</div><span>Mebel</span>
+    </div>
+    <div class="citem" onclick="setCat('Aksessuar',this)">
+      <div class="citem-ico">💍</div><span>Aksess.</span>
+    </div>
+    <div class="citem" onclick="setCat('Bolalar',this)">
+      <div class="citem-ico">🧸</div><span>Bolalar</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">⚡ FLASH SALE — 24 SOAT</div>
+    <h2>Yozgi Chegirmalar<br><span>50%</span> gacha!</h2>
+    <p>Eng yangi mahsulotlar, eng qulay narxlar.<br>Bugun xarid qiling, ertaga qo'lingizda!</p>
+    <div class="hero-cta">
+      <button class="hero-btn prim" onclick="setCat('Hammasi',document.querySelector('.citem'))">Xarid boshlash</button>
+      <button class="hero-btn sec">Kategoriyalar</button>
+    </div>
+    <div class="hero-deco">🛒</div>
+    <div class="hero-dots">
+      <div class="dot on"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+
+  <!-- PROMO STRIP -->
+  <div class="pstrip">
+    <div class="pbox r"><div class="pbox-tag">⚡ Chegirma</div><div class="pbox-title">Elektronika</div><div class="pbox-sub">−30% gacha</div><div class="pbox-emo">📱</div></div>
+    <div class="pbox b"><div class="pbox-tag">🆕 Yangi</div><div class="pbox-title">Kiyimlar</div><div class="pbox-sub">Yozgi kollek.</div><div class="pbox-emo">👗</div></div>
+    <div class="pbox g"><div class="pbox-tag">🌿 Sog'lom</div><div class="pbox-title">Oziq-ovqat</div><div class="pbox-sub">Yangi mahsulot</div><div class="pbox-emo">🥗</div></div>
+    <div class="pbox o"><div class="pbox-tag">🔥 Hit</div><div class="pbox-title">Sport</div><div class="pbox-sub">Top brendlar</div><div class="pbox-emo">⚽</div></div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="sec">
+    <div class="sec-row">
+      <h3 id="sec-title">Barcha mahsulotlar</h3>
+      <a onclick="sortToggle()">Narx ↕</a>
+    </div>
+    <div class="sort-bar">
+      <button class="sort-btn on" onclick="setSort('all',this)">Barchasi</button>
+      <button class="sort-btn" onclick="setSort('sale',this)">Chegirmali</button>
+      <button class="sort-btn" onclick="setSort('new',this)">Yangi</button>
+      <button class="sort-btn" onclick="setSort('hot',this)">🔥 Hit</button>
+      <button class="sort-btn" onclick="setSort('fav',this)">❤️ Sevimli</button>
+    </div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bnav">
+    <div class="bni on" onclick="setTab(this)">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Bosh
+    </div>
+    <div class="bni" onclick="setTab(this)">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Qidiruv
+    </div>
+    <div class="bni" onclick="showFavs();setTab(this)">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Sevimli
+    </div>
+    <div class="bni" onclick="openCart();setTab(this)" style="position:relative">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <div class="bni-dot" id="bni-dot">0</div>
+      Savat
+    </div>
+    <div class="bni" onclick="showProfile();setTab(this)">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profil
+    </div>
+  </nav>
+</div>
+
+<!-- ══════ PROFILE PAGE ══════ -->
+<div class="page" id="pg-profile">
+  <nav class="navbar">
+    <button onclick="goHome()" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;color:#fff;font-size:14px;font-weight:600;font-family:inherit;padding:4px 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Orqaga
+    </button>
+    <div class="nb-logo" style="position:absolute;left:50%;transform:translateX(-50%)">Super<span style="color:var(--red)">Bozor</span></div>
+    <div style="width:70px"></div>
+  </nav>
+  <div class="prof-header">
+    <div class="prof-avt" id="p-avt">S</div>
+    <div class="prof-name" id="p-name">Sardor</div>
+    <div class="prof-ph" id="p-ph">sardor@gmail.com</div>
+  </div>
+  <div class="prof-stats">
+    <div class="ps-box"><div class="ps-num">3</div><div class="ps-lbl">Buyurtma</div></div>
+    <div class="ps-box"><div class="ps-num" id="fav-count">0</div><div class="ps-lbl">Sevimli</div></div>
+    <div class="ps-box"><div class="ps-num">4.9</div><div class="ps-lbl">Reyting</div></div>
+  </div>
+  <div class="prof-menu">
+    <div class="pm-item"><div class="pm-ico" style="background:#FFF0F1">📦</div><div class="pm-txt"><div class="pm-title">Buyurtmalarim</div><div class="pm-sub">3 ta faol buyurtma</div></div><div class="pm-arr">›</div></div>
+    <div class="pm-item"><div class="pm-ico" style="background:#E6FAF1">❤️</div><div class="pm-txt"><div class="pm-title">Sevimli mahsulotlar</div><div class="pm-sub">Saqlangan ro'yxat</div></div><div class="pm-arr">›</div></div>
+    <div class="pm-item"><div class="pm-ico" style="background:#EFF6FF">📍</div><div class="pm-txt"><div class="pm-title">Yetkazish manzili</div><div class="pm-sub">Toshkent, Chilonzor 7</div></div><div class="pm-arr">›</div></div>
+    <div class="pm-item"><div class="pm-ico" style="background:#FFFBEB">💳</div><div class="pm-txt"><div class="pm-title">To'lov usullari</div><div class="pm-sub">Uzcard, Click, Payme</div></div><div class="pm-arr">›</div></div>
+    <div class="pm-item"><div class="pm-ico" style="background:#F5F3FF">🔔</div><div class="pm-txt"><div class="pm-title">Bildirishnomalar</div><div class="pm-sub">Yoqilgan</div></div><div class="pm-arr">›</div></div>
+    <div class="pm-item"><div class="pm-ico" style="background:#F0FDF4">🎧</div><div class="pm-txt"><div class="pm-title">Yordam markazi</div><div class="pm-sub">24/7 qo'llab-quvvatlash</div></div><div class="pm-arr">›</div></div>
+  </div>
+  <button class="out-btn" onclick="doLogout()">Profildan chiqish</button>
+  <div style="height:80px"></div>
+  <nav class="bnav">
+    <div class="bni" onclick="goHome()">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Bosh
+    </div>
+    <div class="bni on">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profil
+    </div>
+  </nav>
+</div>
+
+<!-- ══════ ORDER CONFIRM PAGE ══════ -->
+<div class="page" id="pg-confirm">
+  <div class="confirm-card">
+    <div class="confirm-ico">✅</div>
+    <h2>Buyurtma qabul qilindi!</h2>
+    <p>Rahmat! Sizning buyurtmangiz muvaffaqiyatli qabul qilindi. Tez orada operatorimiz siz bilan bog'lanadi.</p>
+    <div class="confirm-details" id="conf-details"></div>
+    <button class="confirm-btn" onclick="goHome()">Bosh sahifaga qaytish →</button>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<!-- ══════ CART DRAWER ══════ -->
+<div class="drawer" id="drawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-head">
+    <h3>🛒 Savat</h3>
+    <button class="drawer-cls" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="d-body"></div>
+  <div class="drawer-foot" id="d-foot" style="display:none">
+    <div class="order-summary" id="d-summary"></div>
+    <button class="order-btn" onclick="placeOrder()">
+      Buyurtma berish
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14 0"/><path d="m12 5 7 7-7 7"/></svg>
+    </button>
   </div>
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- WISHLIST PANEL -->
-<div class="wishlist-panel" id="wishlistPanel">
-  <div class="wl-header">
-    <h3>❤️ Sevimlilar</h3>
-    <button class="wl-close" onclick="toggleWishlist()">✕</button>
-  </div>
-  <div id="wlItems" style="flex:1;overflow-y:auto;padding:1rem"></div>
-</div>
+<script>
+// ═══ DATA ═══
+const PRODUCTS = [
+  {id:1,n:"Polo Ko'ylak Erkak",b:"Lacoste Style",p:189000,o:250000,c:"Kiyim",tag:"sale",e:"👔",s:4.8,rev:124,desc:"100% paxta, yumshoq va nafis material. Yozgi mavsumga mo'ljallangan zamonaviy kesim. M, L, XL, XXL o'lchamlarida mavjud."},
+  {id:2,n:"Yozgi Ko'ylak Ayol",b:"Fashion UZ",p:145000,o:0,c:"Kiyim",tag:"new",e:"👗",s:4.6,rev:87,desc:"Yengil ipak material, turli ranglarda. Yozgi tadbirlar va kundalik foydalanish uchun ideal. S, M, L o'lchamlarida."},
+  {id:3,n:"Samsung Galaxy A55",b:"Samsung",p:4200000,o:4800000,c:"Elektronika",tag:"sale",e:"📱",s:4.9,rev:312,desc:"6.6' Super AMOLED ekran, 50MP kamera, 5000mAh batareya. Android 14, 8GB RAM, 256GB xotira. 2 yil kafolat."},
+  {id:4,n:"Realme C67 5G",b:"Realme",p:2100000,o:0,c:"Elektronika",tag:"new",e:"📲",s:4.5,rev:156,desc:"6.72' IPS ekran, Dimensity 6100+ protsessor, 108MP kamera, 5000mAh. 4G/5G tarmoqlari. 1 yil kafolat."},
+  {id:5,n:"AirPods Pro 2",b:"Apple",p:1850000,o:2200000,c:"Elektronika",tag:"hot",e:"🎧",s:5.0,rev:489,desc:"Aktiv shovqin o'chirish, Transparency rejimi. 30 soatgacha batareya (quticha bilan). Suv o'tkazmaydigan IPX4."},
+  {id:6,n:"Noutbuk HP Laptop 15",b:"HP",p:7500000,o:9000000,c:"Elektronika",tag:"sale",e:"💻",s:4.7,rev:203,desc:"Intel Core i5-1235U, 16GB DDR4 RAM, 512GB SSD, Intel Iris Xe grafika. 15.6' FHD IPS ekran. Windows 11."},
+  {id:7,n:"Bluetooth Karnay JBL",b:"JBL",p:680000,o:820000,c:"Elektronika",tag:"hot",e:"🔊",s:4.8,rev:267,desc:"360° tovush, IPX7 suv o'tkazmaydigan. 20 soat batareya. USB-C zaryadlash. Qora va ko'k ranglarda."},
+  {id:8,n:"Olmalar 1kg",b:"Fermer Bog'i",p:12000,o:0,c:"Oziq-ovqat",tag:"new",e:"🍎",s:4.9,rev:1024,desc:"Yangi terilgan, mahalliy fermer olmalar. Kimyoviy moddasisiz, organik. Toshkent va Samarqand navlari."},
+  {id:9,n:"Sut Go'zallik 1L",b:"Toshkent Sut",p:18000,o:0,c:"Oziq-ovqat",tag:"",e:"🥛",s:4.7,rev:543,desc:"3.5% yog'lilik, pasterizatsiyalangan. Qo'shimchalarsiz toza sut. Muddat: 7 kun. Sovutgichda saqlang."},
+  {id:10,n:"Makaron Premium 500g",b:"Barakat",p:8500,o:10000,c:"Oziq-ovqat",tag:"sale",e:"🍜",s:4.6,rev:789,desc:"Yuqori sifatli bug'doydan tayyorlangan. Spagetti, penne, farfalle turlari. Tez pishadi, nutritiv tarkibi boy."},
+  {id:11,n:"Sport Krossovka Nike",b:"Nike",p:980000,o:1200000,c:"Poyabzal",tag:"hot",e:"👟",s:5.0,rev:567,desc:"Nike Air cushion texnologiyasi. Nafas oladigan mesh material. 36-46 o'lchamlar. Qora, oq, ko'k ranglarda."},
+  {id:12,n:"Erkak Klassik Tufli",b:"Ecco",p:620000,o:0,c:"Poyabzal",tag:"new",e:"👞",s:4.8,rev:234,desc:"Haqiqiy charm, qo'lda ishlangan. Biznes va rasmiy tadbirlar uchun. 39-45 o'lchamlar. Qora va jigarrang."},
+  {id:13,n:"Adidas Sport Kostyum",b:"Adidas",p:680000,o:850000,c:"Sport",tag:"sale",e:"🏃",s:4.9,rev:345,desc:"Polyester-spandex aralashmasi, quruq qoluvchi texnologiya. Erkak va ayollar uchun. S-3XL o'lchamlar."},
+  {id:14,n:"Futbol To'pi FIFA",b:"Mikasa",p:125000,o:0,c:"Sport",tag:"new",e:"⚽",s:4.7,rev:189,desc:"FIFA sertifikatlangan, 420g og'irlik. 5-o'lcham. Har ob-havo sharoitida foydalanish mumkin."},
+  {id:15,n:"Casio Pro Trek Soat",b:"Casio",p:850000,o:1050000,c:"Aksessuar",tag:"sale",e:"⌚",s:4.9,rev:412,desc:"Solar zaryadlash, barometr, altimetr, kompas. 200m suv o'tkazmaydigan. Titanium korpus."},
+  {id:16,n:"Charm Sumka Ayol",b:"Michael Kors",p:480000,o:0,c:"Aksessuar",tag:"new",e:"👜",s:4.8,rev:298,desc:"Haqiqiy charm, metall detallar. Ichida 3 bo'lim + fermuarli cho'ntak. Qora, jigarrang, qizil ranglarda."},
+  {id:17,n:"Yig'ma Stol IKEA",b:"IKEA",p:890000,o:1100000,c:"Mebel",tag:"sale",e:"🪑",s:4.6,rev:156,desc:"Ekologik toza material, oson yig'iladi. 120x60x75 sm. Eman va oq ranglarda. Kafolat 3 yil."},
+  {id:18,n:"Yumshoq Divan",b:"MebelUZ",p:3200000,o:3800000,c:"Mebel",tag:"hot",e:"🛋️",s:4.8,rev:234,desc:"Velvet qoplama, mahalliy ishlab chiqarish. 3 o'rinli. Ko'k, yashil, kulrang ranglarda. Kafolat 2 yil."},
+  {id:19,n:"Lego Teknik Set",b:"Lego",p:320000,o:0,c:"Bolalar",tag:"new",e:"🧱",s:4.9,rev:567,desc:"789 ta detal, 8-14 yosh uchun. Mashina va mexanizm qurilishi. O'yinni rivojlantiradi, ijodiy fikrlash."},
+  {id:20,n:"Teddy Ayiqcha XL",b:"Kids Zone",p:95000,o:120000,c:"Bolalar",tag:"sale",e:"🧸",s:5.0,rev:1234,desc:"50sm balandlik, gipoallergen to'ldiruvchi. Mashinalarda yuviladi. 0+ yosh. Atirgul va jigarrang ranglarda."},
+];
 
-<!-- ===== SHOP PAGE ===== -->
-<div id="shopPage">
-  <!-- PROMO BANNER -->
-  <div class="promo-banner">
-    <div class="promo-inner">
-      <div class="promo-text">
-        <h1>Termezning <em>Eng Yaxshi</em><br>Online Do'koni</h1>
-        <p>500+ mahsulot • Termez shahri bo'ylab tezkor yetkazib berish • Kafolat bilan</p>
-        <div class="promo-badges">
-          <span class="promo-badge">📦 Ertaga yetkazib berish</span>
-          <span class="promo-badge">🔒 Xavfsiz to'lov</span>
-          <span class="promo-badge">↩️ 30 kun qaytarish</span>
-          <span class="promo-badge">📍 Termez, Surxondaryo</span>
-          <span class="promo-badge">🎁 1000 ball sovg'a</span>
+// ═══ STATE ═══
+let users = [{phone:"+998901234567",name:"Sardor Rahimov",email:"sardor@gmail.com",pass:"123456"}];
+let cu = null, cart = [], favs = new Set(), curCat = "Hammasi", sortAsc = true, curFilter = "all", filtered = [...PRODUCTS];
+
+// ═══ AUTH ═══
+function switchTab(t){
+  ['in','up'].forEach(x=>{
+    document.getElementById('t-'+x).classList.toggle('on',x===t);
+    document.getElementById('f-'+x).style.display=x===t?'block':'none';
+  });
+}
+
+function doLogin(){
+  const u=document.getElementById('l-u').value.trim();
+  const p=document.getElementById('l-p').value.trim();
+  const err=document.getElementById('l-err');
+  const found=users.find(x=>(x.phone===u||x.email===u)&&x.pass===p);
+  if(!found){err.style.display='block';return;}
+  err.style.display='none';
+  cu=found;
+  goPage('main');
+  applyFilter();
+}
+
+function doReg(){
+  const n=document.getElementById('r-n').value.trim();
+  const ph=document.getElementById('r-ph').value.trim();
+  const e=document.getElementById('r-e').value.trim();
+  const p=document.getElementById('r-p').value.trim();
+  const err=document.getElementById('r-err');
+  if(!n||!ph||!e||!p){err.textContent="Barcha maydonlarni to'ldiring!";err.style.display='block';return;}
+  if(p.length<6){err.textContent="Parol kamida 6 ta belgi bo'lishi kerak!";err.style.display='block';return;}
+  err.style.display='none';
+  cu={name:n,phone:ph,email:e,pass:p};
+  users.push(cu);
+  goPage('main');
+  applyFilter();
+}
+
+function doLogout(){
+  cu=null;cart=[];favs=new Set();
+  goPage('auth');
+  updateBadge();
+}
+
+// ═══ PAGES ═══
+function goPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  document.getElementById('pg-'+id).classList.add('show');
+}
+function goHome(){goPage('main');applyFilter();}
+function showProfile(){
+  goPage('profile');
+  if(cu){
+    document.getElementById('p-name').textContent=cu.name;
+    document.getElementById('p-ph').textContent=cu.email;
+    document.getElementById('p-avt').textContent=cu.name[0].toUpperCase();
+    document.getElementById('fav-count').textContent=favs.size;
+  }
+}
+
+// ═══ PRODUCTS ═══
+function renderProducts(list){
+  const g=document.getElementById('pgrid');
+  if(!list.length){
+    g.innerHTML='<div class="no-results"><div>🔍</div><p>Mahsulot topilmadi</p></div>';
+    return;
+  }
+  g.innerHTML=list.map(p=>{
+    const inC=cart.find(c=>c.id===p.id);
+    const inF=favs.has(p.id);
+    const disc=p.o?Math.round((1-p.p/p.o)*100):0;
+    const tagMap={sale:'sale',new:'new',hot:'hot'};
+    const tagTxt={sale:'Chegirma',new:'Yangi',hot:'🔥 Hit'};
+    const stars='★'.repeat(Math.floor(p.s))+(p.s%1>=0.5?'½':'')+'☆'.repeat(5-Math.ceil(p.s));
+    return `<div class="pc">
+      <div class="pc-img">${p.e}
+        ${p.tag?`<div class="pc-tag ${tagMap[p.tag]||''}">${tagTxt[p.tag]||''}</div>`:''}
+        <button class="pc-wish${inF?' on':''}" id="w${p.id}" onclick="toggleFav(${p.id},event)">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="pc-body">
+        <div class="pc-name">${p.n}</div>
+        <div class="pc-brand">${p.b}</div>
+        <div class="pc-stars">★★★★★ <span>${p.s} (${p.rev} ta)</span></div>
+        <div class="pc-price">
+          <span class="pc-now">${p.p.toLocaleString()} so'm</span>
+          ${p.o?`<span class="pc-old">${p.o.toLocaleString()}</span><span class="pc-disc">-${disc}%</span>`:''}
         </div>
+        <button class="pc-add${inC?' done':''}" id="b${p.id}" onclick="addToCart(${p.id})">
+          ${inC?'✓ Savatda':'Savatga qo\'shish'}
+        </button>
       </div>
-      <div class="promo-stats">
-        <div class="promo-stat"><div class="num" id="ps1">0</div><div class="lbl">Mahsulotlar</div></div>
-        <div class="promo-stat"><div class="num" id="ps2">0</div><div class="lbl">Xursand mijoz</div></div>
-        <div class="promo-stat"><div class="num" id="ps3">0</div><div class="lbl">Kunlik buyurtma</div></div>
-      </div>
-    </div>
-  </div>
+    </div>`;
+  }).join('');
+}
 
-  <!-- FLASH SALE -->
-  <div class="flash-sale">
-    <div class="flash-inner">
-      <div class="flash-title">
-        <span>⚡ FLASH SALE</span>
-        <div class="flash-timer">
-          <div class="timer-block" id="th">05</div>
-          <span class="timer-sep">:</span>
-          <div class="timer-block" id="tm">59</div>
-          <span class="timer-sep">:</span>
-          <div class="timer-block" id="ts">47</div>
-        </div>
-      </div>
-      <div class="flash-items" id="flashItems"></div>
-    </div>
-  </div>
+function setCat(cat,el){
+  curCat=cat;
+  document.querySelectorAll('.citem').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('sec-title').textContent=cat==='Hammasi'?'Barcha mahsulotlar':cat+' mahsulotlari';
+  applyFilter();
+}
 
-  <!-- CATEGORIES GRID -->
-  <div class="cats-section">
-    <div class="cats-inner2">
-      <div class="cats-title">KATEGORIYALAR</div>
-      <div class="cats-grid" id="catsGrid"></div>
-    </div>
-  </div>
+function setSort(type,el){
+  curFilter=type;
+  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  applyFilter();
+}
 
-  <!-- SORT BAR -->
-  <div class="sort-bar">
-    <div class="sort-left">Ko'rsatilmoqda: <strong id="prodCount">0</strong> mahsulot</div>
-    <div class="sort-btns">
-      <button class="sort-btn active" onclick="sortProds('default',this)">Tavsiya</button>
-      <button class="sort-btn" onclick="sortProds('price_asc',this)">Narx ↑</button>
-      <button class="sort-btn" onclick="sortProds('price_desc',this)">Narx ↓</button>
-      <button class="sort-btn" onclick="sortProds('rating',this)">Reyting</button>
-      <button class="sort-btn" onclick="sortProds('new',this)">Yangi</button>
-    </div>
-    <div class="view-btns">
-      <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')">⊞</button>
-      <button class="view-btn" id="listViewBtn" onclick="setView('list')">☰</button>
-    </div>
-  </div>
+function applyFilter(){
+  let list=PRODUCTS.filter(p=>curCat==='Hammasi'||p.c===curCat);
+  if(curFilter==='sale')list=list.filter(p=>p.tag==='sale');
+  else if(curFilter==='new')list=list.filter(p=>p.tag==='new');
+  else if(curFilter==='hot')list=list.filter(p=>p.tag==='hot');
+  else if(curFilter==='fav')list=list.filter(p=>favs.has(p.id));
+  filtered=[...list];
+  renderProducts(filtered);
+}
 
-  <!-- MAIN CONTENT -->
-  <div class="main-wrap">
-    <!-- SIDEBAR FILTERS -->
-    <div class="sidebar">
-      <div class="sidebar-card">
-        <div class="sidebar-title">Narx (so'm)</div>
-        <div class="price-inputs">
-          <input type="number" id="priceMin" placeholder="0" class="form-input" style="font-size:0.82rem;padding:0.55rem">
-          <span class="price-sep">—</span>
-          <input type="number" id="priceMax" placeholder="10 000 000" class="form-input" style="font-size:0.82rem;padding:0.55rem">
-        </div>
-        <button class="filter-apply" onclick="applyFilters()">Filtrlash</button>
-      </div>
-      <div class="sidebar-card">
-        <div class="sidebar-title">Reyting</div>
-        <div class="rating-filter">
-          <label class="rating-row"><input type="radio" name="rating" value="0" checked onchange="applyFilters()"> <span class="rating-stars">★★★★★</span><span class="rating-count"> Barchasi</span></label>
-          <label class="rating-row"><input type="radio" name="rating" value="4.5" onchange="applyFilters()"> <span class="rating-stars">★★★★★</span><span class="rating-count"> 4.5+</span></label>
-          <label class="rating-row"><input type="radio" name="rating" value="4" onchange="applyFilters()"> <span class="rating-stars">★★★★☆</span><span class="rating-count"> 4.0+</span></label>
-          <label class="rating-row"><input type="radio" name="rating" value="3" onchange="applyFilters()"> <span class="rating-stars">★★★☆☆</span><span class="rating-count"> 3.0+</span></label>
-        </div>
-      </div>
-      <div class="sidebar-card">
-        <div class="sidebar-title">Brendlar</div>
-        <div class="brand-list">
-          <label class="brand-item"><input type="checkbox" value="Samsung" onchange="applyFilters()"> Samsung</label>
-          <label class="brand-item"><input type="checkbox" value="Apple" onchange="applyFilters()"> Apple</label>
-          <label class="brand-item"><input type="checkbox" value="Xiaomi" onchange="applyFilters()"> Xiaomi</label>
-          <label class="brand-item"><input type="checkbox" value="Nike" onchange="applyFilters()"> Nike</label>
-          <label class="brand-item"><input type="checkbox" value="Adidas" onchange="applyFilters()"> Adidas</label>
-          <label class="brand-item"><input type="checkbox" value="Mahalliy" onchange="applyFilters()"> Mahalliy</label>
-        </div>
-      </div>
-    </div>
+function showFavs(){
+  curFilter='fav';
+  document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelector('.sort-btn:last-child').classList.add('on');
+  applyFilter();
+}
 
-    <!-- PRODUCTS -->
-    <div>
-      <div class="products-grid" id="productsGrid"></div>
-    </div>
-  </div>
+function doSearch(q){
+  const list=PRODUCTS.filter(p=>p.n.toLowerCase().includes(q.toLowerCase())||p.b.toLowerCase().includes(q.toLowerCase()));
+  renderProducts(list);
+}
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="footer-logo">Termez<span>Shop</span></div>
-          <p>Termez shahridagi eng yirik online savdo platformasi. Sifatli mahsulotlar, tez yetkazib berish.</p>
-          <div class="footer-socials">
-            <div class="f-soc">📘</div>
-            <div class="f-soc">📸</div>
-            <div class="f-soc">💬</div>
-            <div class="f-soc">🐦</div>
+function sortToggle(){
+  filtered.sort((a,b)=>sortAsc?a.p-b.p:b.p-a.p);
+  sortAsc=!sortAsc;
+  renderProducts(filtered);
+}
+
+function toggleFav(id,e){
+  e.stopPropagation();
+  const btn=document.getElementById('w'+id);
+  if(favs.has(id)){favs.delete(id);btn.classList.remove('on');showToast('❤️ Sevimlilardan olib tashlandi');}
+  else{favs.add(id);btn.classList.add('on');showToast('❤️ Sevimlilarga qo\'shildi');}
+}
+
+// ═══ CART ═══
+function addToCart(id){
+  const p=PRODUCTS.find(x=>x.id===id);
+  const ex=cart.find(c=>c.id===id);
+  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  updateBadge();
+  const b=document.getElementById('b'+id);
+  if(b){b.textContent='✓ Savatda';b.classList.add('done');}
+  showToast('🛒 '+p.n+' savatga qo\'shildi!');
+}
+
+function updateBadge(){
+  const t=cart.reduce((s,c)=>s+c.qty,0);
+  const nb=document.getElementById('nb-badge');
+  if(nb)nb.textContent=t;
+  const bd=document.getElementById('bni-dot');
+  if(bd){bd.textContent=t;bd.style.display=t?'flex':'none';}
+}
+
+function openCart(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  renderCart();
+}
+
+function closeCart(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function renderCart(){
+  const body=document.getElementById('d-body');
+  const foot=document.getElementById('d-foot');
+  if(!cart.length){
+    body.innerHTML='<div class="empty-cart"><div>🛒</div><p>Savat bo\'sh</p><small>Mahsulot qo\'shing va xarid qiling!</small></div>';
+    foot.style.display='none';return;
+  }
+  body.innerHTML=cart.map(c=>`
+    <div class="ci">
+      <div class="ci-img">${c.e}</div>
+      <div class="ci-info">
+        <div class="ci-name">${c.n}</div>
+        <div class="ci-brand">${c.b} · ${c.c}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;line-height:1.4">${c.desc.substring(0,70)}...</div>
+        <div class="ci-price">${(c.p*c.qty).toLocaleString()} so'm</div>
+        <div class="ci-row">
+          <div class="ci-qty">
+            <button class="qb" onclick="chQty(${c.id},-1)">−</button>
+            <span style="font-weight:700;font-size:14px;min-width:20px;text-align:center">${c.qty}</span>
+            <button class="qb" onclick="chQty(${c.id},1)">+</button>
           </div>
-        </div>
-        <div class="footer-col">
-          <h4>Do'kon</h4>
-          <a>Elektronika</a><a>Kiyim-kechak</a><a>Oziq-ovqat</a><a>Uy jihozi</a><a>Sport</a><a>Go'zallik</a>
-        </div>
-        <div class="footer-col">
-          <h4>Yordam</h4>
-          <a>Yetkazib berish</a><a>Qaytarish siyosati</a><a>To'lov usullari</a><a>Savollar</a><a>Aloqa</a>
-        </div>
-        <div class="footer-col">
-          <h4>Aloqa</h4>
-          <a>📞 +998 76 220 00 00</a>
-          <a>📧 info@termezshop.uz</a>
-          <a>📍 Termez shahar, Surxondaryo</a>
-          <a>🕐 9:00 — 21:00, har kuni</a>
+          <button class="ci-del" onclick="remFromCart(${c.id})">✕ O'chirish</button>
         </div>
       </div>
-      <div class="footer-bottom">
-        <span>© 2026 TermezShop. Barcha huquqlar himoyalangan.</span>
-        <div class="payment-icons">
-          <span class="pay-ico">VISA</span>
-          <span class="pay-ico">MC</span>
-          <span class="pay-ico">PAYME</span>
-          <span class="pay-ico">CLICK</span>
-          <span class="pay-ico">UZCARD</span>
-        </div>
-      </div>
-    </div>
-  </footer>
-</div>
+    </div>`).join('');
 
-<!-- PROFILE PAGE -->
-<div class="profile-page" id="profilePage">
-  <div class="profile-header">
-    <div class="profile-av" id="profAv">?</div>
-    <div>
-      <div class="profile-name" id="profName">Kirish kerak</div>
-      <div class="profile-phone" id="profPhone">—</div>
-      <div class="profile-joined" id="profJoined"></div>
-    </div>
-    <div class="profile-points">
-      <div class="pts" id="profPts">0</div>
-      <div class="pts-lbl">Ball</div>
-    </div>
-  </div>
-  <div class="profile-grid">
-    <div class="profile-menu">
-      <div class="pm-item active" onclick="switchProfileTab('orders',this)"><span class="pm-icon">📦</span> Buyurtmalarim</div>
-      <div class="pm-item" onclick="switchProfileTab('wishlist',this)"><span class="pm-icon">❤️</span> Sevimlilar</div>
-      <div class="pm-item" onclick="switchProfileTab('addresses',this)"><span class="pm-icon">📍</span> Manzillarim</div>
-      <div class="pm-item" onclick="switchProfileTab('settings',this)"><span class="pm-icon">⚙️</span> Sozlamalar</div>
-      <div class="pm-item" onclick="logout()" style="color:var(--red);margin-top:1rem"><span class="pm-icon">🚪</span> Chiqish</div>
-    </div>
-    <div class="profile-content">
-      <div class="pc-section active" id="tab-orders">
-        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">Buyurtmalar tarixi</h3>
-        <div class="orders-list" id="ordersList"></div>
-      </div>
-      <div class="pc-section" id="tab-wishlist">
-        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">Sevimli mahsulotlar</h3>
-        <div id="wishlistInProfile"></div>
-      </div>
-      <div class="pc-section" id="tab-addresses">
-        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">Yetkazib berish manzillari</h3>
-        <div style="background:var(--bg);border-radius:12px;padding:1.25rem;border:1.5px solid var(--border)">
-          <div style="font-weight:700;margin-bottom:0.3rem">🏠 Asosiy manzil</div>
-          <div style="font-size:0.85rem;color:var(--muted)">Termez shahar, Surxondaryo viloyati</div>
-        </div>
-      </div>
-      <div class="pc-section" id="tab-settings">
-        <h3 style="font-size:1rem;font-weight:800;margin-bottom:1rem">Hisob sozlamalari</h3>
-        <div style="color:var(--muted);font-size:0.88rem">Tez orada...</div>
-      </div>
-    </div>
-  </div>
-</div>
+  const subtotal=cart.reduce((s,c)=>s+c.p*c.qty,0);
+  const delivery=subtotal>500000?0:25000;
+  const total=subtotal+delivery;
+  document.getElementById('d-summary').innerHTML=`
+    <div class="os-row"><span>Mahsulotlar (${cart.reduce((s,c)=>s+c.qty,0)} ta)</span><span class="val">${subtotal.toLocaleString()} so'm</span></div>
+    <div class="os-row"><span>Yetkazib berish</span><span class="val" style="color:var(--green)">${delivery===0?'Bepul 🎉':delivery.toLocaleString()+' so\'m'}</span></div>
+    <div class="os-row"><span>Jami to'lov</span><span style="color:var(--red)">${total.toLocaleString()} so'm</span></div>`;
+  foot.style.display='block';
+}
 
-<!-- SUCCESS PAGE -->
-<div id="successPage" style="display:none">
-  <div class="success-page">
-    <div class="success-card">
-      <span class="success-anim">🎉</span>
-      <div class="success-title">Buyurtma qabul qilindi!</div>
-      <div class="success-msg">Rahmat! Buyurtmangiz muvaffaqiyatli qabul qilindi.<br>Kuryer siz bilan tez orada bog'lanadi.</div>
-      <div class="order-info-card">
-        <div class="oi-row"><span>Buyurtma №</span><span id="sOrderId">—</span></div>
-        <div class="oi-row"><span>Sana</span><span id="sDate">—</span></div>
-        <div class="oi-row"><span>To'lov usuli</span><span id="sPayment">—</span></div>
-        <div class="oi-row"><span>Yetkazib berish</span><span style="color:var(--green)">Bepul ✓</span></div>
-        <div class="oi-row"><span>Manzil</span><span id="sAddr">—</span></div>
-        <div class="oi-row"><span>Jami summa</span><span id="sTotal" style="color:var(--red)">—</span></div>
-      </div>
-      <div class="delivery-box">
-        <div class="db-icon">🚚</div>
-        <div class="db-text">
-          <h4>Ertaga yetkazib beramiz!</h4>
-          <p>Termez shahar bo'ylab 1-2 kun ichida yetkazib berish. Kuryer siz bilan bog'lanadi va aniq vaqtni aytadi.</p>
-        </div>
-      </div>
-      <div class="loyalty-card">
-        <div class="lc-top">
-          <div class="lc-chip"></div>
-          <div class="lc-logo">TermezShop</div>
-        </div>
-        <div class="lc-num" id="lCardNum">•••• •••• •••• 0001</div>
-        <div class="lc-bottom">
-          <div><div class="lc-label">Karta egasi</div><div class="lc-val" id="lCardName">—</div></div>
-          <div><div class="lc-label">Amal qilish</div><div class="lc-val">12/28</div></div>
-          <div><div class="lc-label">Ballar</div><div class="lc-val" id="lCardPts" style="color:var(--yellow)">+500</div></div>
-          <div class="lc-nfc">📶</div>
-        </div>
-        <div class="lc-location">📍 Termez shahar, Surxondaryo viloyati, O'zbekiston</div>
-      </div>
-      <div class="success-actions">
-        <button class="sa-btn sa-primary" onclick="showPage('shop')">🛍️ Xarid davom ettirish</button>
-        <button class="sa-btn sa-secondary" onclick="showProfilePage()">📦 Buyurtmalarim</button>
-      </div>
-    </div>
-  </div>
-</div>
+function chQty(id,d){
+  const i=cart.find(c=>c.id===id);
+  if(!i)return;
+  i.qty+=d;
+  if(i.qty<=0){remFromCart(id);return;}
+  updateBadge();renderCart();
+}
 
-<!-- LOGIN MODAL -->
-<div class="modal-overlay hidden" id="loginModal" onclick="if(event.target===this)closeModal('login')">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('login')">✕</button>
-    <div class="modal-pad">
-      <div class="modal-logo">👋</div>
-      <div class="modal-title">Xush kelibsiz!</div>
-      <div class="modal-sub">Hisobingizga kiring</div>
-      <div class="social-login">
-        <button class="soc-btn">🌐 Google</button>
-        <button class="soc-btn">📘 Facebook</button>
-      </div>
-      <div class="divider">yoki</div>
-      <div class="form-group">
-        <label class="form-label">Email yoki Telefon</label>
-        <input type="text" class="form-input" id="liEmail" placeholder="+998 90 123 45 67">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Parol</label>
-        <input type="password" class="form-input" id="liPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
-      <div style="text-align:right;font-size:0.78rem;margin-top:-0.5rem;margin-bottom:0.75rem"><a style="color:var(--red);cursor:pointer;font-weight:700">Parolni unutdingizmi?</a></div>
-      <div class="form-err" id="liErr">Email yoki parol noto'g'ri!</div>
-      <button class="submit-btn" onclick="doLogin()">Kirish →</button>
-      <div class="form-switch">Hisobingiz yo'qmi? <a onclick="switchModal('login','register')">Ro'yxatdan o'ting</a></div>
-    </div>
-  </div>
-</div>
+function remFromCart(id){
+  cart=cart.filter(c=>c.id!==id);
+  const b=document.getElementById('b'+id);
+  if(b){b.textContent="Savatga qo'shish";b.classList.remove('done');}
+  updateBadge();renderCart();
+}
 
-<!-- REGISTER MODAL -->
-<div class="modal-overlay hidden" id="registerModal" onclick="if(event.target===this)closeModal('register')">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('register')">✕</button>
-    <div class="modal-pad">
-      <div class="modal-logo">📝</div>
-      <div class="modal-title">Hisob yaratish</div>
-      <div class="modal-sub">TermezShop oilasiga qo'shiling!</div>
-      <div class="form-row2">
-        <div class="form-group"><label class="form-label">Ism</label><input type="text" class="form-input" id="rFirst" placeholder="Alisher"></div>
-        <div class="form-group"><label class="form-label">Familiya</label><input type="text" class="form-input" id="rLast" placeholder="Karimov"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Telefon</label><input type="tel" class="form-input" id="rPhone" placeholder="+998 90 123 45 67"></div>
-      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="rEmail" placeholder="siz@email.com"></div>
-      <div class="form-row2">
-        <div class="form-group"><label class="form-label">Parol</label><input type="password" class="form-input" id="rPass" placeholder="••••••••"></div>
-        <div class="form-group"><label class="form-label">Tasdiqlash</label><input type="password" class="form-input" id="rPass2" placeholder="••••••••"></div>
-      </div>
-      <div class="agree-row"><input type="checkbox" id="rAgree" checked><span>Men <a>foydalanish shartlari</a> va <a>maxfiylik siyosati</a>ga roziman</span></div>
-      <div class="form-err" id="rErr">Xatolik yuz berdi!</div>
-      <button class="submit-btn" onclick="doRegister()">Ro'yxatdan o'tish →</button>
-      <div class="form-switch">Hisobingiz bormi? <a onclick="switchModal('register','login')">Kiring</a></div>
-    </div>
-  </div>
-</div>
+function placeOrder(){
+  if(!cart.length)return;
+  const subtotal=cart.reduce((s,c)=>s+c.p*c.qty,0);
+  const delivery=subtotal>500000?0:25000;
+  const total=subtotal+delivery;
+  const items=cart.map(c=>c.n).join(', ');
+  const orderId='SB-'+Math.floor(100000+Math.random()*900000);
+  document.getElementById('conf-details').innerHTML=`
+    <div class="cd-row"><span class="cd-lbl">Buyurtma №</span><span class="cd-val">${orderId}</span></div>
+    <div class="cd-row"><span class="cd-lbl">Mahsulotlar</span><span class="cd-val" style="max-width:180px;text-align:right;font-size:12px">${items}</span></div>
+    <div class="cd-row"><span class="cd-lbl">Yetkazish</span><span class="cd-val" style="color:var(--green)">${delivery===0?'Bepul':delivery.toLocaleString()+' so\'m'}</span></div>
+    <div class="cd-row"><span class="cd-lbl">Jami to'lov</span><span class="cd-val" style="color:var(--red)">${total.toLocaleString()} so'm</span></div>
+    <div class="cd-row"><span class="cd-lbl">Taxminiy vaqt</span><span class="cd-val">1-2 ish kuni</span></div>`;
+  cart=[];
+  updateBadge();
+  closeCart();
+  PRODUCTS.forEach(p=>{
+    const b=document.getElementById('b'+p.id);
+    if(b){b.textContent="Savatga qo'shish";b.classList.remove('done');}
+  });
+  goPage('confirm');
+}
 
-<!-- PRODUCT DETAIL MODAL -->
-<div class="modal-overlay hidden" id="detailModal" onclick="if(event.target===this)closeModal('detail')">
-  <div class="modal prod-detail" style="max-width:680px">
-    <button class="modal-close" onclick="closeModal('detail')" style="top:0.75rem;right:0.75rem;z-index:10">✕</button>
-    <div id="detailContent"></div>
-  </div>
-</div>
+function setTab(el){
+  document.querySelectorAll('#pg-main .bni').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
 
-<!-- CHECKOUT MODAL -->
-<div class="modal-overlay hidden" id="checkoutModal" onclick="if(event.target===this)closeModal('checkout')">
-  <div class="modal checkout-modal">
-    <button class="modal-close" onclick="closeModal('checkout')">✕</button>
-    <div class="modal-pad">
-      <div class="modal-title" style="margin-bottom:1rem">📦 Buyurtma rasmiylashtirish</div>
-      <div class="checkout-steps">
-        <div class="step active" id="step1">1. Mahsulotlar</div>
-        <div class="step" id="step2">2. Yetkazib berish</div>
-        <div class="step" id="step3">3. To'lov</div>
-      </div>
-      <!-- Step 1 -->
-      <div class="checkout-step-content active" id="cs1">
-        <div class="co-items-list" id="coItemsList"></div>
-        <div class="co-totals">
-          <div class="co-total-row"><span>Mahsulotlar:</span><span id="coSubtotal">0 so'm</span></div>
-          <div class="co-total-row"><span>Yetkazib berish:</span><span style="color:var(--green)">Bepul</span></div>
-          <div class="co-total-row"><span>Chegirma:</span><span id="coDiscount" style="color:var(--green)">0 so'm</span></div>
-          <div class="co-total-big"><span>Jami:</span><span id="coTotal">0 so'm</span></div>
-        </div>
-        <div class="step-btns"><button class="step-next" onclick="goStep(2)">Davom etish →</button></div>
-      </div>
-      <!-- Step 2 -->
-      <div class="checkout-step-content" id="cs2">
-        <div class="form-row2">
-          <div class="form-group"><label class="form-label">Ism</label><input type="text" class="form-input" id="coFirst" placeholder="Alisher"></div>
-          <div class="form-group"><label class="form-label">Familiya</label><input type="text" class="form-input" id="coLast" placeholder="Karimov"></div>
-        </div>
-        <div class="form-group"><label class="form-label">Telefon</label><input type="tel" class="form-input" id="coPhone" placeholder="+998 90 123 45 67"></div>
-        <div class="form-group"><label class="form-label">Manzil (Termez shahar)</label><input type="text" class="form-input" id="coAddr" placeholder="Ko'cha, uy raqami, mahalla"></div>
-        <div class="form-row2">
-          <div class="form-group"><label class="form-label">Tuman</label>
-            <select class="form-input" id="coDistrict">
-              <option>Termez shahri</option>
-              <option>Sherobod tumani</option>
-              <option>Denov tumani</option>
-              <option>Jarqo'rg'on tumani</option>
-            </select>
-          </div>
-          <div class="form-group"><label class="form-label">Qo'shimcha izoh</label><input type="text" class="form-input" id="coNote" placeholder="Ixtiyoriy..."></div>
-        </div>
-        <div class="form-err" id="coErr">Barcha maydonlarni to'ldiring!</div>
-        <div class="step-btns">
-          <button class="step-prev" onclick="goStep(1)">← Orqaga</button>
-          <button class="step-next" onclick="goStep(3)">To'lovga o'tish →</button>
-        </div>
-      </div>
-      <!-- Step 3 -->
-      <div class="checkout-step-content" id="cs3">
-        <div style="font-size:0.82rem;font-weight:800;color:var(--muted);letter-spacing:0.06em;margin-bottom:0.75rem">TO'LOV USULINI TANLANG</div>
-        <div class="payment-methods">
-          <label class="pay-method selected"><input type="radio" name="pay" value="Naqd pul" checked><div class="pay-icon">💵</div><div><div class="pay-name">Naqd pul</div><div class="pay-desc">Kuryer kelganda to'lang</div></div></label>
-          <label class="pay-method"><input type="radio" name="pay" value="Payme"><div class="pay-icon">📱</div><div><div class="pay-name">Payme</div><div class="pay-desc">Tezkor to'lov</div></div></label>
-          <label class="pay-method"><input type="radio" name="pay" value="Click"><div class="pay-icon">⚡</div><div><div class="pay-name">Click</div><div class="pay-desc">Click bilan to'lang</div></div></label>
-          <label class="pay-method"><input type="radio" name="pay" value="UzCard"><div class="pay-icon">💳</div><div><div class="pay-name">UzCard / HUMO</div><div class="pay-desc">Karta bilan to'lov</div></div></label>
-        </div>
-        <div style="background:#f0fdf4;border:1px solid #a7f3d0;border-radius:10px;padding:0.75rem 1rem;font-size:0.8rem;color:var(--green);font-weight:700;margin-bottom:0.75rem">
-          ✅ Ushbu buyurtmadan +500 ball yig'asiz!
-        </div>
-        <div class="step-btns">
-          <button class="step-prev" onclick="goStep(2)">← Orqaga</button>
-          <button class="step-next" onclick="placeOrder()" style="background:var(--green)">🎉 Buyurtmani tasdiqlash</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
 </body>
 </html>
-HTMLEOF
-wc -l /mnt/user-data/outputs/termez_shop.html
